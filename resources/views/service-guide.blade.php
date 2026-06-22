@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Service Guide - MedCampus</title>
   <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
+  <style>
+    .bell-wrapper { position:relative; }
+    .notif-panel { position:absolute; right:0; top:calc(100% + 8px); width:320px; background:var(--white); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:200; display:none; overflow:hidden; text-align:left; }
+    .notif-panel.open { display:block; }
+    .notif-header { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+    .notif-header h4 { font-size:14px; font-weight:700; margin:0; color:var(--dark-navy); }
+    .notif-header span { font-size:11px; color:var(--primary-green); font-weight:600; cursor:pointer; }
+    .notif-item { padding:14px 18px; border-bottom:1px solid var(--border); cursor:pointer; transition:.15s; display:flex; gap:12px; }
+    .notif-item:hover { background:var(--bg-gray); }
+    .notif-item:last-child { border-bottom:none; }
+    .notif-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .notif-item h5 { font-size:13px; margin-bottom:3px; margin-top:0; color:var(--dark-navy); }
+    .notif-item p  { font-size:11px; color:var(--text-gray); margin:0; }
+  </style>
 </head>
 <body>
   <nav class="navbar">
@@ -19,8 +39,8 @@
         <a href="{{ url('/patient/history') }}">Medical History</a>
       </div>
       <div class="nav-profile" style="position: relative;">
-        <div class="bell-wrapper">
-          <span class="bell">🔔</span>
+        <div class="bell-wrapper" style="color:var(--text-gray);cursor:pointer;display:flex;align-items:center;margin-right:12px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         </div>
         
         <!-- Tombol Profil Utama -->
@@ -46,14 +66,14 @@
              </div>
           </div>
           
-          <!-- Link Menu -->
-          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;">
-            <span>👤</span> My Profile
+          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-gray);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            My Profile
           </a>
           
-          <!-- Tombol Logout -->
-          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);">
-            <span>🚪</span> Logout
+          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Logout
           </a>
         </div>
       </div>
@@ -124,7 +144,10 @@
     <div class="cta-section">
       <h2>Ready to get started?</h2>
       <p>Explore all the features MedCampus has to offer.</p>
-      <a href="{{ url('/patient/dashboard') }}" class="btn btn-outline" style="border-color:var(--primary-green);color:var(--primary-green);background:white;">← Back to Home</a>
+      <a href="{{ url('/patient/dashboard') }}" class="btn btn-outline" style="border-color:var(--primary-green);color:var(--primary-green);background:white;display:inline-flex;align-items:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Back to Home
+      </a>
     </div>
   </main>
 
@@ -140,9 +163,41 @@
   </footer>
 
   <script src="{{ asset('js/utils.js') }}"></script>
-  <script src="{{ asset('js/app-data.js') }}"></script>
-  <script src="{{ asset('js/profile-dropdown.js') }}"></script>
-  <script src="{{ asset('js/patient.js') }}"></script>
   <script src="{{ asset('js/mobile-nav.js') }}"></script>
+  <script>
+    (function() {
+      const bellWrap = document.querySelector('.bell-wrapper');
+      if (!bellWrap) return;
+
+      const panel = document.createElement('div');
+      panel.className = 'notif-panel';
+      panel.innerHTML = '<div class="notif-header"><h4 style="display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> Notifications</h4><span id="clearNotifs">Mark all read</span></div><div id="notifList"></div>';
+      bellWrap.style.position = 'relative';
+      bellWrap.appendChild(panel);
+
+      function renderNotifs() {
+        const list = document.getElementById('notifList');
+        if (!list) return;
+        list.innerHTML = '';
+        const notifs = [
+            { color:'#10b981', title:'<span style="display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;color:#059669;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> No New Alerts</span>', body: 'You are all caught up with your medical updates!' }
+        ];
+        notifs.forEach(n => {
+          const div = document.createElement('div');
+          div.className = 'notif-item';
+          div.innerHTML = `<div class="notif-dot" style="background:${n.color};"></div><div><h5 style="margin-bottom:4px;">${n.title}</h5><p>${n.body}</p></div>`;
+          list.appendChild(div);
+        });
+      }
+
+      bellWrap.addEventListener('click', e => {
+        e.stopPropagation();
+        renderNotifs();
+        panel.classList.toggle('open');
+      });
+      document.addEventListener('click', () => panel.classList.remove('open'));
+      document.getElementById('clearNotifs')?.addEventListener('click', () => { panel.classList.remove('open'); });
+    })();
+  </script>
 </body>
 </html>

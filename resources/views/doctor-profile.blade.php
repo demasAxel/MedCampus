@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Profile - MedCampus</title>
   <link rel="stylesheet" href="{{ asset('css/doctor.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
+  <style>
+    .bell-wrapper { position:relative; }
+    .notif-panel { position:absolute; right:0; top:calc(100% + 8px); width:320px; background:var(--white); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:200; display:none; overflow:hidden; }
+    .notif-panel.open { display:block; }
+    .notif-header { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+    .notif-header h4 { font-size:14px; font-weight:700; margin:0; }
+    .notif-header span { font-size:11px; color:var(--primary-green); font-weight:600; cursor:pointer; }
+    .notif-item { padding:14px 18px; border-bottom:1px solid var(--border); cursor:pointer; transition:.15s; display:flex; gap:12px; }
+    .notif-item:hover { background:var(--bg-gray); }
+    .notif-item:last-child { border-bottom:none; }
+    .notif-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .notif-item h5 { font-size:13px; margin-bottom:3px; margin-top:0; }
+    .notif-item p  { font-size:11px; color:var(--text-gray); margin:0; }
+  </style>
 </head>
 <body>
   <nav class="navbar">
@@ -22,9 +42,8 @@
         <a href="{{ url('/doctor/schedule') }}">Schedule</a>
       </div>
       <div class="nav-profile" style="position: relative; display: flex; align-items: center; gap: 16px;">
-        
-        <div class="bell-wrapper">
-          <div class="icon-btn">🔔</div>
+        <div class="bell-wrapper" style="color:var(--text-gray);cursor:pointer;display:flex;align-items:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         </div>
         
         <div id="mcProfileToggle" onclick="toggleProfileDropdown(event)" style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; background: var(--bg-gray); padding: 4px 12px 4px 4px; border-radius: 24px;">
@@ -32,21 +51,12 @@
             {{ strtoupper(substr(Auth::user()->user_name, 0, 2)) }}
           </div>
           <span style="font-size: 13px; font-weight: 600; color: var(--dark-navy);">{{ Auth::user()->user_name }}</span>
-          <span style="font-size: 10px; color: var(--text-gray); margin-left: 4px;">▼</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-gray);margin-left:2px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
 
         <div id="mcProfileDropdown" style="position: absolute; top: calc(100% + 10px); right: 0; background: #fff; width: 170px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid var(--border); display: none; flex-direction: column; overflow: hidden; z-index: 1000; text-align: left;">
-          
-          <a href="{{ url('/doctor/profile') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--dark-navy); text-decoration: none; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            My Profile
-          </a>
-          
-          <a href="{{ url('/logout') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--dark-navy); text-decoration: none; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-            Logout
-          </a>
-          
+          <a href="{{ url('/doctor/profile') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--dark-navy); text-decoration: none; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); background: var(--bg-gray);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> My Profile</a>
+          <a href="{{ url('/logout') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--dark-navy); text-decoration: none; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Logout</a>
         </div>
       </div>
     </div>
@@ -261,11 +271,15 @@
           <p style="font-size:13px;color:var(--text-gray);margin-bottom:16px;">Interface Theme</p>
           <div class="theme-cards">
             <div class="theme-card" data-theme="light" id="themeLightCard">
-              <div class="theme-icon">☀️</div>
+              <div class="theme-icon" style="display:flex;align-items:center;justify-content:center;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#f59e0b;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              </div>
               <h4>Light Mode</h4>
             </div>
             <div class="theme-card" data-theme="dark" id="themeDarkCard">
-              <div class="theme-icon">🌙</div>
+              <div class="theme-icon" style="display:flex;align-items:center;justify-content:center;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#6366f1;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              </div>
               <h4>Dark Mode</h4>
             </div>
           </div>
@@ -454,5 +468,97 @@
              validatePassword();
         });
     </script>
+
+    <script>
+    (function() {
+      const bellWrap = document.querySelector('.bell-wrapper');
+      if (!bellWrap) return;
+
+      const panel = document.createElement('div');
+      panel.className = 'notif-panel';
+      panel.innerHTML = '<div class="notif-header"><h4 style="display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> Notifications</h4><span id="clearNotifs">Mark all read</span></div><div id="notifList"></div>';
+      bellWrap.style.position = 'relative';
+      bellWrap.appendChild(panel);
+
+      function renderNotifs() {
+        const list = document.getElementById('notifList');
+        if (!list) return;
+        list.innerHTML = '';
+        const notifs = [
+            { color:'#3b82f6', title:'<span style="display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;color:#2563eb;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Reminder</span>', body: 'Afternoon shift begins in 30 mins.' }
+        ];
+        notifs.forEach(n => {
+          const div = document.createElement('div');
+          div.className = 'notif-item';
+          div.innerHTML = `<div class="notif-dot" style="background:${n.color};"></div><div><h5 style="margin-bottom:4px;">${n.title}</h5><p>${n.body}</p></div>`;
+          list.appendChild(div);
+        });
+      }
+
+      bellWrap.addEventListener('click', e => {
+        e.stopPropagation();
+        renderNotifs();
+        panel.classList.toggle('open');
+      });
+      document.addEventListener('click', () => panel.classList.remove('open'));
+      document.getElementById('clearNotifs')?.addEventListener('click', () => { panel.classList.remove('open'); });
+    })();
+
+    document.querySelectorAll('.theme-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        
+        const isDark = card.dataset.theme === 'dark';
+        document.documentElement.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('dark-mode', isDark);
+      });
+    });
+
+    // 2. FUNGSI LOAD DATA DARI MEMORI (LOCAL STORAGE)
+    function loadPreferences() {
+      const isDark = localStorage.getItem('mc_dark_mode') === '1';
+      const lightCard = document.getElementById('themeLightCard');
+      const darkCard = document.getElementById('themeDarkCard');
+      
+      if (lightCard && darkCard) {
+          lightCard.classList.toggle('selected', !isDark);
+          darkCard.classList.toggle('selected', isDark);
+      }
+      
+      document.documentElement.classList.toggle('dark-mode', isDark);
+      document.body.classList.toggle('dark-mode', isDark);
+
+      const savedEmail = localStorage.getItem('mc_notif_email');
+      const savedSms   = localStorage.getItem('mc_notif_sms');
+      if (savedEmail !== null && document.getElementById('toggleEmail')) document.getElementById('toggleEmail').checked = savedEmail === '1';
+      if (savedSms   !== null && document.getElementById('toggleSms')) document.getElementById('toggleSms').checked   = savedSms   === '1';
+    }
+
+    loadPreferences();
+
+    const btnSavePrefs = document.getElementById('btnSavePrefs');
+    if (btnSavePrefs) {
+      btnSavePrefs.addEventListener('click', () => {
+        const dark = document.querySelector('.theme-card.selected')?.dataset.theme === 'dark';
+        
+        localStorage.setItem('mc_dark_mode', dark ? '1' : '0');
+        if(document.getElementById('toggleEmail')) localStorage.setItem('mc_notif_email', document.getElementById('toggleEmail').checked ? '1' : '0');
+        if(document.getElementById('toggleSms')) localStorage.setItem('mc_notif_sms', document.getElementById('toggleSms').checked ? '1' : '0');
+        
+        alert('Preferences saved successfully!'); 
+      });
+    }
+
+    const btnDiscardPrefs = document.getElementById('btnDiscardPrefs');
+    if (btnDiscardPrefs) {
+      btnDiscardPrefs.addEventListener('click', () => {
+        if (!confirm('Discard unsaved preference changes?')) return;
+        
+        loadPreferences(); // Tarik lagi data dari memori browser
+        alert('Changes discarded.');
+      });
+    }
+  </script>
 </body>
 </html>

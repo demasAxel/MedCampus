@@ -24,6 +24,11 @@
 .bell-wrapper  { position:relative; }
 </style>
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+<script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
   <style>
     /* Delete confirmation modal */
     .delete-modal-overlay {

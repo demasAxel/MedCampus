@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digital Ticket - MedCampus</title>
   <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
 </head>
 <body style="background:#f1f5f9;padding:40px 0;">
   <div class="container" style="max-width:800px;margin-bottom:24px;display:flex;justify-content:space-between;">

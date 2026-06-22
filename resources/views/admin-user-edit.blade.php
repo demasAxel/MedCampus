@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit User - MedCampus Admin</title>
   <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
   <style>
       .status-option { cursor: pointer; padding: 10px; border: 1px solid var(--border); border-radius: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--text-gray); transition: 0.2s; }
       .status-option.selected { border-color: var(--primary-green); background: var(--light-green); color: var(--primary-green); }

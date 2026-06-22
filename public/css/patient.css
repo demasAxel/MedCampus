@@ -465,3 +465,25 @@ img { max-width: 100%; display: block; }
   /* ── Flex between → wrap ── */
   .flex-between { flex-wrap: wrap; gap: 12px; }
 }
+
+html.dark-mode body, body.dark-mode {
+  --bg-gray: #0f172a;       
+  --white: #1e293b;        
+  --dark-navy: #f8fafc;    
+  --text-gray: #94a3b8;   
+  --border: #334155;       
+  --light-green: #064e3b;   
+}
+
+body.dark-mode {
+  --bg-gray: #0f172a;       
+  --white: #1e293b;        
+  --dark-navy: #f8fafc;    
+  --text-gray: #94a3b8;   
+  --border: #334155;       
+  --light-green: #064e3b;   
+}
+
+body, .card, .navbar, .notif-panel, #mcDropdownMenu, .profile-menu, .theme-card, .select-card, input, select, textarea {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}

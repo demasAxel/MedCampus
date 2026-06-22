@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visit Detail - MedCampus</title>
   <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
 </head>
 <body>
   <nav class="navbar">
@@ -16,8 +22,8 @@
         <a href="{{ url('/patient/history') }}" class="active">Medical History</a>
       </div>
       <div class="nav-profile" style="position: relative;">
-        <div class="bell-wrapper">
-          <span class="bell">🔔</span>
+        <div class="bell-wrapper" style="color:var(--text-gray);cursor:pointer;display:flex;align-items:center;margin-right:12px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         </div>
         
         <!-- Tombol Profil Utama -->
@@ -43,14 +49,14 @@
              </div>
           </div>
           
-          <!-- Link Menu -->
-          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;">
-            <span>👤</span> My Profile
+          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-gray);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            My Profile
           </a>
           
-          <!-- Tombol Logout -->
-          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);">
-            <span>🚪</span> Logout
+          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Logout
           </a>
         </div>
       </div>
@@ -81,7 +87,10 @@
       <a href="{{ url('/patient/history') }}" style="color:var(--text-gray);font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
         ← Back to History
       </a>
-      <button onclick="window.print()" class="btn btn-outline" style="font-size:13px;padding:8px 16px;background:white;">🖨 Print Record</button>
+      <button onclick="window.print()" class="btn btn-outline" style="font-size:13px;padding:8px 16px;background:white;display:flex;align-items:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Print Record
+      </button>
     </div>
 
     <div class="card card-shadow" style="padding:0; overflow:hidden; border-radius:12px; margin-bottom:24px;">
@@ -125,12 +134,15 @@
     <!-- KARTU HASIL PEMERIKSAAN -->
     <div class="card card-shadow" style="padding:32px;">
       <h3 style="margin-bottom:24px; font-size:18px; display:flex; align-items:center; gap:8px;">
-        <span style="color:var(--primary-green);">📋</span> Medical Assessment
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-green);"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+        Medical Assessment
       </h3>
 
       @if(!$detail->diagnosis)
         <div style="background:#f8fafc; border:1px dashed #cbd5e1; padding:24px; text-align:center; border-radius:8px; color:var(--text-gray);">
-          <span style="font-size:24px; display:block; margin-bottom:8px;">⏳</span>
+          <div style="margin-bottom:12px;color:#94a3b8;display:flex;justify-content:center;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
           Medical assessment has not been inputted by the doctor yet.
         </div>
       @else

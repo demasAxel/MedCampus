@@ -420,3 +420,26 @@ tr:last-child td { border-bottom: none; }
 .profile-dropdown-item:hover { background: var(--bg-gray); color: var(--primary-green) !important; padding-left: 20px !important; }
 .profile-dropdown-item.logout { color: #ef4444 !important; border-top: 1px solid var(--border) !important; }
 .profile-dropdown-item.logout:hover { background: #fee2e2; color: #dc2626 !important; padding-left: 16px !important; }
+
+
+html.dark-mode body, body.dark-mode {
+  --bg-gray: #0f172a;       
+  --white: #1e293b;        
+  --dark-navy: #f8fafc;    
+  --text-gray: #94a3b8;   
+  --border: #334155;       
+  --light-green: #064e3b;   
+}
+
+body.dark-mode {
+  --bg-gray: #0f172a;       
+  --white: #1e293b;        
+  --dark-navy: #f8fafc;    
+  --text-gray: #94a3b8;   
+  --border: #334155;       
+  --light-green: #064e3b;   
+}
+
+body, .card, .navbar, .notif-panel, #mcDropdownMenu, .profile-menu, .theme-card, .select-card, input, select, textarea {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}

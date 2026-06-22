@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Appointment - MedCampus</title>
   <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
 </head>
 <body>
   <nav class="navbar">
@@ -19,8 +25,8 @@
         <a href="{{ url('/patient/history') }}">Medical History</a>
       </div>
       <div class="nav-profile" style="position: relative;">
-        <div class="bell-wrapper">
-          <span class="bell">🔔</span>
+        <div class="bell-wrapper" style="color:var(--text-gray);cursor:pointer;display:flex;align-items:center;margin-right:12px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         </div>
         
         <!-- Tombol Profil Utama -->
@@ -46,14 +52,14 @@
              </div>
           </div>
           
-          <!-- Link Menu -->
-          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;">
-            <span>👤</span> My Profile
+          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-gray);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            My Profile
           </a>
           
-          <!-- Tombol Logout -->
-          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);">
-            <span>🚪</span> Logout
+          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Logout
           </a>
         </div>
       </div>
@@ -105,8 +111,9 @@
               <label style="font-size:12px;font-weight:700;color:var(--text-gray);text-transform:uppercase;display:block;margin-bottom:8px;">Appointment Date</label>
               <input type="date" id="appointmentDate" style="width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:var(--font-main);outline:none;transition:.2s;" min="">
             </div>
-            <div id="dateHint" style="font-size:13px;color:var(--text-gray);padding:12px;background:var(--bg-gray);border-radius:8px;line-height:1.6;">
-              📅 Select a date to see available doctors and time slots.
+            <div id="dateHint" style="font-size:13px;color:var(--text-gray);padding:12px;background:var(--bg-gray);border-radius:8px;line-height:1.6;display:flex;align-items:flex-start;gap:8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;flex-shrink:0;color:var(--primary-green);"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>Select a date to see available doctors and time slots.</span>
             </div>
           </div>
         </div>
@@ -137,7 +144,10 @@
                       <p style="font-size:12px;color:var(--text-gray);">{{ $spec }}</p>
                     </div>
                   </div>
-                  <span class="badge" style="background:#fef3c7;color:#b45309;font-size:11px;">⭐ {{ $rating }}</span>
+                  <span class="badge" style="background:#fef3c7;color:#b45309;font-size:11px;display:flex;align-items:center;gap:4px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    {{ $rating }}
+                  </span>
                 </div>
               @empty
                 <p style="color:var(--text-gray);font-size:13px;padding:12px;">No doctors available right now.</p>
@@ -182,6 +192,19 @@
         </div>
       </div>
     </div>
+
+    <div id="alertModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 360px; text-align: center; padding: 32px 24px;">
+      <div style="width: 56px; height: 56px; background: #fee2e2; color: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      </div>
+      <h2 style="font-size: 18px; color: var(--dark-navy); margin-bottom: 8px;">Action Required</h2>
+      <p id="alertMessage" style="color: var(--text-gray); font-size: 14px; margin-bottom: 24px; line-height: 1.5;">
+        Message goes here.
+      </p>
+      <button type="button" onclick="document.getElementById('alertModal').classList.remove('active')" class="btn btn-primary" style="width: 100%;">OK, I Understand</button>
+    </div>
+  </div>
   </main>
 
   <script src="{{ asset('js/utils.js') }}"></script>
@@ -210,7 +233,7 @@
         if (!selectedDoctorId || !dateRaw) return;
 
         // Tampilkan teks loading
-        slotGrid.innerHTML = '<p style="grid-column: 1 / -1; font-size:13px; color:var(--text-gray); font-style:italic;">⏳ Checking doctor availability...</p>';
+        slotGrid.innerHTML = '<div style="grid-column: 1 / -1; display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-gray); font-style:italic;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Checking doctor availability...</div>';
         selectedSlot = null;
         document.getElementById('summary-slot').textContent = '—';
 
@@ -221,7 +244,7 @@
                 slotGrid.innerHTML = ''; // Bersihkan loading
 
                 if (data.length === 0) {
-                    slotGrid.innerHTML = '<p style="grid-column: 1 / -1; font-size:13px; color:#ef4444; font-weight:700;">❌ No shifts available for this doctor on the selected date.</p>';
+                    slotGrid.innerHTML = '<div style="grid-column: 1 / -1; display:flex; align-items:center; gap:8px; font-size:13px; color:#ef4444; font-weight:700;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> No shifts available for this doctor on the selected date.</div>';
                     return;
                 }
 
@@ -308,13 +331,24 @@
     // 5. Tombol Proceed To Checkout
     document.getElementById('btnConfirmPay').addEventListener('click', () => {
       const date = document.getElementById('appointmentDate').value;
-      if (!date) { alert('Please select a date.'); return; }
-      if (!selectedDoctorId) { alert('Please select a doctor.'); return; }
+      const alertModal = document.getElementById('alertModal');
+      const alertMsg = document.getElementById('alertMessage');
+
+      // Fungsi ajaib pemanggil popup custom
+      function showError(msg) {
+          alertMsg.textContent = msg;
+          alertModal.classList.add('active');
+      }
+
+      // Validasi menggunakan custom popup (bukan alert browser lagi)
+      if (!date) { showError('Please select an appointment date first.'); return; }
+      if (!selectedDoctorId) { showError('Please select a doctor from the list.'); return; }
       if (!selectedSlot) { 
-          alert('No shift selected! Please choose a valid date that has an available schedule.'); 
+          showError('No shift selected! Please choose a valid date that has an available schedule.'); 
           return; 
       }
 
+      // Jika lolos validasi, lanjut ke checkout
       const bookingData = {
         clinic: selectedClinic,
         doctor_id: selectedDoctorId,

@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Appointment Confirmed - MedCampus</title>
   <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
 </head>
 <body style="background:var(--bg-gray);">
   <main class="container" style="padding:80px 0;text-align:center;">

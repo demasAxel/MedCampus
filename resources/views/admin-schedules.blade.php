@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Schedules - MedCampus Admin</title>
   <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
   <style>
     /* CSS UNTUK NOTIFIKASI */
     .notif-panel {

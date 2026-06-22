@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Medical History - MedCampus</title>
   <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
 </head>
 <body>
   <!-- NAVBAR -->
@@ -20,8 +26,8 @@
         <a href="{{ url('/patient/history') }}" class="active">Medical History</a>
       </div>
       <div class="nav-profile" style="position: relative;">
-        <div class="bell-wrapper">
-          <span class="bell">🔔</span>
+        <div class="bell-wrapper" style="color:var(--text-gray);cursor:pointer;display:flex;align-items:center;margin-right:12px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         </div>
         
         <!-- Tombol Profil Utama -->
@@ -47,14 +53,14 @@
              </div>
           </div>
           
-          <!-- Link Menu -->
-          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;">
-            <span>👤</span> My Profile
+          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-gray);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            My Profile
           </a>
           
-          <!-- Tombol Logout -->
-          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);">
-            <span>🚪</span> Logout
+          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Logout
           </a>
         </div>
       </div>
@@ -87,18 +93,22 @@
         <h1 style="font-size: 28px; margin-bottom: 8px; color: var(--dark-navy);">Medical History</h1>
         <p style="color: var(--text-gray); font-size: 15px;">Manage and review your medical records, diagnoses, and prescriptions.</p>
       </div>
-      <button class="btn btn-outline" style="background: white; border-radius: 8px; font-size: 14px; display: flex; align-items: center; gap: 8px; padding: 10px 16px;">
-        <span style="color: var(--text-gray);">📥</span> Download Report
+      <button class="btn btn-outline" style="background: var(--white); border-radius: 8px; font-size: 14px; display: flex; align-items: center; gap: 8px; padding: 10px 16px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-gray);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Download Report
       </button>
     </div>
 
     <!-- SEARCH & FILTER BAR (Hanya Status) -->
-    <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 32px; overflow-x: auto; padding-bottom: 4px;" id="filterContainer">
-      <input type="text" id="searchInput" placeholder="Search clinics, doctors..." style="padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; min-width: 280px; outline: none; background: white; color: var(--dark-navy);">
-      <button class="btn btn-primary filter-btn" data-filter="All" style="border-radius: 20px; padding: 8px 20px; font-size: 13px; white-space: nowrap;">All Status</button>
-      <button class="btn btn-outline filter-btn" data-filter="Completed" style="border-radius: 20px; padding: 8px 20px; font-size: 13px; background: white; white-space: nowrap;">Completed</button>
-      <button class="btn btn-outline filter-btn" data-filter="Cancelled" style="border-radius: 20px; padding: 8px 20px; font-size: 13px; background: white; white-space: nowrap;">Cancelled</button>
-    </div>
+    <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+      <input type="text" id="searchInput" placeholder="Search clinics, doctors..." style="flex: 1; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border); outline: none; background: var(--bg-gray); color: var(--dark-navy); transition: 0.3s; font-family: var(--font-main);">
+      
+      <div style="display: flex; gap: 12px;" id="filterContainer">
+        <button class="btn btn-primary filter-btn" data-filter="All">All</button>
+        <button class="btn btn-outline filter-btn" data-filter="Completed" style="background: var(--white); transition: 0.3s;">Completed</button>
+        <button class="btn btn-outline filter-btn" data-filter="Cancelled" style="background: var(--white); transition: 0.3s;">Cancelled</button>
+      </div>
+    </div> 
 
     <!-- HISTORY CARDS -->
     <div style="display: flex; flex-direction: column; gap: 16px;" id="historyList">
@@ -107,17 +117,22 @@
              data-status="{{ $history->status == 'C' ? 'Cancelled' : 'Completed' }}" 
              data-clinic="{{ strtolower($history->clinic) }}" 
              data-doctor="{{ strtolower($history->doctor_name) }}"
-             style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 0; border-radius: 12px; background: white; border: 1px solid var(--border); transition: 0.3s;">
+             style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 0; border-radius: 12px; background: var(--white); border: 1px solid var(--border); transition: 0.3s;">
           
           <div style="display: flex; gap: 20px; align-items: center;">
-            <div style="width: 56px; height: 56px; border-radius: 12px; background: var(--bg-gray); display: flex; align-items: center; justify-content: center; font-size: 24px; border: 1px solid var(--border); color: #ef4444;">
-              @if($history->status == 'C') 🚫 @else 🩺 @endif
+            <div style="width: 56px; height: 56px; border-radius: 12px; background: var(--bg-gray); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); color: #ef4444;">
+              @if($history->status == 'C') 
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+              @else 
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-green);"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+              @endif
             </div>
             <div>
               <h3 style="margin-bottom: 4px; font-size: 16px; font-weight: 700; color: var(--dark-navy);">{{ $history->clinic }}</h3>
               <p style="color: var(--text-gray); font-size: 13px; margin-bottom: 6px;">{{ $history->doctor_name }} • {{ $history->specialty ?? 'Consultation' }}</p>
               <p style="font-size: 12px; font-weight: 600; color: var(--text-gray); display: flex; align-items: center; gap: 6px;">
-                <span style="color: var(--primary-green);">🗓️</span> {{ \Carbon\Carbon::parse($history->appointment_date)->format('d M Y') }}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-green);"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                {{ \Carbon\Carbon::parse($history->appointment_date)->format('d M Y') }}
               </p>
             </div>
           </div>
@@ -133,16 +148,19 @@
           
         </div>
       @empty
-        <div style="text-align: center; padding: 60px 24px; background: white; border-radius: 12px; border: 1px solid var(--border);" id="emptyState">
-          <div style="font-size: 48px; margin-bottom: 16px;">🗂️</div>
+        <div style="text-align: center; padding: 60px 24px; background: var(--white); border-radius: 12px; border: 1px solid var(--border); display: none;" id="noMatchState">
+          <div style="margin-bottom: 16px; color: #cbd5e1; display: flex; justify-content: center;">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+          </div>
           <h3 style="font-size: 18px; margin-bottom: 8px;">No Medical History</h3>
           <p style="color: var(--text-gray);">You haven't completed or cancelled any consultations yet.</p>
         </div>
       @endforelse
 
-      <!-- State Jika Filter Tidak Menemukan Hasil -->
-      <div style="text-align: center; padding: 60px 24px; background: white; border-radius: 12px; border: 1px solid var(--border); display: none;" id="noMatchState">
-        <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
+      <div style="text-align: center; padding: 60px 24px; background: var(--white); border-radius: 12px; border: 1px solid var(--border); display: none;" id="noMatchState">
+        <div style="margin-bottom: 16px; color: #cbd5e1; display: flex; justify-content: center;">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
         <h3 style="font-size: 18px; margin-bottom: 8px;">No Results Found</h3>
         <p style="color: var(--text-gray);">Try adjusting your search or filter criteria.</p>
       </div>
@@ -199,7 +217,7 @@
           filterBtns.forEach(b => {
             b.classList.remove('btn-primary');
             b.classList.add('btn-outline');
-            b.style.background = 'white';
+            b.style.background = 'var(--white)';
           });
           btn.classList.remove('btn-outline');
           btn.classList.add('btn-primary');

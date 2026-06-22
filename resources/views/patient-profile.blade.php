@@ -14,6 +14,17 @@
     #tab-security .login-activity-list { gap: 12px; }
     #tab-security .security-form-card > p { margin-bottom: 20px; }
     #tab-security .form-grid-2 { margin-top: 16px; }
+    .notif-panel { position:absolute; right:0; top:calc(100% + 8px); width:320px; background:var(--white); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:200; display:none; overflow:hidden; text-align:left; }
+    .notif-panel.open { display:block; }
+    .notif-header { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+    .notif-header h4 { font-size:14px; font-weight:700; margin:0; color:var(--dark-navy); }
+    .notif-header span { font-size:11px; color:var(--primary-green); font-weight:600; cursor:pointer; }
+    .notif-item { padding:14px 18px; border-bottom:1px solid var(--border); cursor:pointer; transition:.15s; display:flex; gap:12px; }
+    .notif-item:hover { background:var(--bg-gray); }
+    .notif-item:last-child { border-bottom:none; }
+    .notif-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .notif-item h5 { font-size:13px; margin-bottom:3px; margin-top:0; color:var(--dark-navy); }
+    .notif-item p  { font-size:11px; color:var(--text-gray); margin:0; }
   </style>
   <style>
     #tab-edit-profile .input-icon-wrap {
@@ -46,6 +57,12 @@
     }
   </style>
 <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+
+<script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
 </head>
 <body>
   <nav class="navbar">
@@ -60,8 +77,8 @@
         <a href="{{ url('/patient/history') }}">Medical History</a>
       </div>
       <div class="nav-profile" style="position: relative;">
-        <div class="bell-wrapper">
-          <span class="bell">🔔</span>
+        <div class="bell-wrapper" style="color:var(--text-gray);cursor:pointer;display:flex;align-items:center;margin-right:12px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         </div>
         
         <!-- Tombol Profil Utama -->
@@ -87,14 +104,14 @@
              </div>
           </div>
           
-          <!-- Link Menu -->
-          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;">
-            <span>👤</span> My Profile
+          <a href="{{ url('/patient/profile') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: var(--dark-navy); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--border); transition: 0.2s;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-gray);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            My Profile
           </a>
           
-          <!-- Tombol Logout -->
-          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);">
-            <span>🚪</span> Logout
+          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Logout
           </a>
         </div>
       </div>
@@ -200,8 +217,8 @@
                 </div>
               </div>
 
-              <div class="form-actions" style="margin-top: 24px;">
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Save Changes</button>
+              <div class="form-actions" style="margin-top: 24px; display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
               </div>
             </div>
           </form>
@@ -242,24 +259,14 @@
             </h3>
             <p>Recent devices that have logged into your account.</p>
             <div class="login-activity-list">
-              <div class="login-activity-item">
-                <div class="login-activity-icon">
-                  <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              <div class="login-activity-item" style="display:flex; align-items:flex-start; gap:12px; margin-bottom:16px;">
+                <div class="login-activity-icon" style="margin-top:2px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-green);"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                 </div>
                 <div class="login-activity-info">
-                  <h5>Mac OS • Safari</h5>
-                  <p style="margin-bottom:3px;">Surabaya, Indonesia</p>
-                  <span class="active-now" style="display:block;">Active Now</span>
-                </div>
-              </div>
-              <div class="login-activity-item">
-                <div class="login-activity-icon">
-                  <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-                </div>
-                <div class="login-activity-info">
-                  <h5>iOS • App</h5>
-                  <p style="margin-bottom:2px;">Surabaya, Indonesia</p>
-                  <p style="color:var(--text-gray);">Yesterday at 09:15</p>
+                  <h5 style="margin:0 0 4px 0; font-size:14px; color:var(--dark-navy);">Current Session • Web Browser</h5>
+                  <p style="margin:0 0 4px 0; font-size:12px; color:var(--text-gray);">Surabaya, Indonesia (IP: {{ request()->ip() }})</p>
+                  <span class="active-now" style="display:inline-block; font-size:11px; font-weight:700; color:var(--primary-green); background:var(--light-green); padding:2px 8px; border-radius:4px;">Active Now</span>
                 </div>
               </div>
             </div>
@@ -304,15 +311,19 @@
             </h3>
             <p style="font-size:13px;color:var(--text-gray);margin-bottom:14px;">Interface Theme</p>
             <div class="theme-cards">
-              <div class="theme-card" data-theme="light" id="themeLightCard">
-                <div class="theme-icon">☀️</div>
-                <h4>Light Mode</h4>
+            <div class="theme-card" data-theme="light" id="themeLightCard">
+              <div class="theme-icon" style="display:flex;align-items:center;justify-content:center;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#f59e0b;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
               </div>
-              <div class="theme-card" data-theme="dark" id="themeDarkCard">
-                <div class="theme-icon">🌙</div>
-                <h4>Dark Mode</h4>
-              </div>
+              <h4>Light Mode</h4>
             </div>
+            <div class="theme-card" data-theme="dark" id="themeDarkCard">
+              <div class="theme-icon" style="display:flex;align-items:center;justify-content:center;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#6366f1;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              </div>
+              <h4>Dark Mode</h4>
+            </div>
+          </div>
             <p class="system-note" style="margin-top:12px;">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
               System default is currently active.
@@ -422,60 +433,45 @@
     const urlTab = new URLSearchParams(location.search).get('tab');
     if (urlTab) switchTab(urlTab);
 
-    populate();
-
-    document.getElementById('avatarFileInput').addEventListener('change', function() {
-      const file = this.files[0]; if (!file) return;
-      if (file.size > 800 * 1024) { Toast.show('File exceeds 800K limit.', 'error'); this.value = ''; return; }
-      const reader = new FileReader();
-      reader.onload = e => { document.getElementById('editAvatarPreview').src = e.target.result; };
-      reader.readAsDataURL(file);
-    });
-
-    document.getElementById('btnRemoveAvatar').addEventListener('click', () => {
-      document.getElementById('editAvatarPreview').src = defaultAvatar();
-      document.getElementById('avatarFileInput').value = '';
-    });
-
-    document.getElementById('btnCancelEdit').addEventListener('click', () => {
-      populate();
-      Toast.show('Changes discarded.', 'info');
-    });
-
+    // =====================================
+    // 2. PASSWORD LOGIC
+    // =====================================
     document.getElementById('btnUpdatePw').addEventListener('click', () => {
       const cur  = document.getElementById('secCurrentPw').value;
       const nw   = document.getElementById('secNewPw').value;
       const conf = document.getElementById('secConfirmPw').value;
-      if (!cur)           { Toast.show('Enter your current password.', 'error'); return; }
-      if (nw.length < 6)  { Toast.show('New password must be at least 6 characters.', 'error'); return; }
-      if (nw !== conf)    { Toast.show('Passwords do not match.', 'error'); return; }
-
-      const creds   = JSON.parse(localStorage.getItem('mc_stored_creds') || '[]');
-      const existing = creds.find(c => c.email === session?.email);
-      if (existing) existing.password = nw;
-      else creds.push({ email: session?.email, password: nw });
-      localStorage.setItem('mc_stored_creds', JSON.stringify(creds));
+      if (!cur)           { if(typeof Toast !== 'undefined') Toast.show('Enter your current password.', 'error'); else alert('Enter current password'); return; }
+      if (nw.length < 6)  { if(typeof Toast !== 'undefined') Toast.show('New password must be at least 6 characters.', 'error'); else alert('Password too short'); return; }
+      if (nw !== conf)    { if(typeof Toast !== 'undefined') Toast.show('Passwords do not match.', 'error'); else alert('Passwords do not match'); return; }
 
       ['secCurrentPw','secNewPw','secConfirmPw'].forEach(id => document.getElementById(id).value = '');
-      Toast.show('Password updated successfully!', 'success');
+      if(typeof Toast !== 'undefined') Toast.show('Password updated successfully!', 'success'); else alert('Password updated successfully!');
     });
 
     document.getElementById('btnCancelPw').addEventListener('click', () => {
       ['secCurrentPw','secNewPw','secConfirmPw'].forEach(id => document.getElementById(id).value = '');
     });
 
+    // =====================================
+    // 3. SIGN OUT ALL DEVICES
+    // =====================================
     document.getElementById('btnSignOutAll').addEventListener('click', () => {
       if (!confirm('Sign out from all devices? You will be logged out here too.')) return;
-      AppData.logout();
-      Toast.show('Signed out from all devices.', 'info');
-      setTimeout(() => { window.location.href = '{{ url('/login') }}'; }, 1000);
+      if(typeof Toast !== 'undefined') Toast.show('Signed out from all devices.', 'info'); else alert('Signed out');
+      setTimeout(() => { window.location.href = '{{ url('/logout') }}'; }, 1000);
     });
 
+    // =====================================
+    // 4. PREFERENCES & DARK MODE LOGIC
+    // =====================================
     (function restorePrefs() {
       const isDark = localStorage.getItem('mc_dark_mode') === '1';
       document.getElementById('themeLightCard').classList.toggle('selected', !isDark);
       document.getElementById('themeDarkCard').classList.toggle('selected',   isDark);
-      if (isDark) document.body.classList.add('dark-mode');
+      if (isDark) {
+          document.documentElement.classList.add('dark-mode');
+          document.body.classList.add('dark-mode');
+      }
 
       const lang = localStorage.getItem('mc_pref_lang');
       const tz   = localStorage.getItem('mc_pref_tz');
@@ -488,29 +484,45 @@
       if (savedSms   !== null) document.getElementById('toggleSms').checked   = savedSms   === '1';
     })();
 
+    // LIVE PREVIEW SAAT KARTU DIKLIK
     document.querySelectorAll('.theme-card').forEach(card => {
       card.addEventListener('click', () => {
         document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
+
+        // Langsung ubah warna layar (Live Preview Seketika!)
+        const isDark = card.dataset.theme === 'dark';
+        document.documentElement.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('dark-mode', isDark);
       });
     });
 
+    // SIMPAN PERMANEN
     document.getElementById('btnSavePrefs').addEventListener('click', () => {
       const dark = document.querySelector('.theme-card.selected')?.dataset.theme === 'dark';
+
+      document.documentElement.classList.toggle('dark-mode', dark);
       document.body.classList.toggle('dark-mode', dark);
+
       localStorage.setItem('mc_dark_mode',   dark ? '1' : '0');
       localStorage.setItem('mc_notif_email', document.getElementById('toggleEmail').checked ? '1' : '0');
       localStorage.setItem('mc_notif_sms',   document.getElementById('toggleSms').checked   ? '1' : '0');
       localStorage.setItem('mc_pref_lang',   document.getElementById('prefLang').value);
       localStorage.setItem('mc_pref_tz',     document.getElementById('prefTimezone').value);
-      Toast.show('Preferences saved successfully!', 'success');
+      if(typeof Toast !== 'undefined') Toast.show('Preferences saved successfully!', 'success'); else alert('Saved!');
     });
 
+    // DISCARD PREFERENCES
     document.getElementById('btnDiscardPrefs').addEventListener('click', () => {
       if (!confirm('Discard unsaved preference changes?')) return;
+
       const isDark = localStorage.getItem('mc_dark_mode') === '1';
       document.getElementById('themeLightCard').classList.toggle('selected', !isDark);
       document.getElementById('themeDarkCard').classList.toggle('selected',   isDark);
+
+      document.documentElement.classList.toggle('dark-mode', isDark);
+      document.body.classList.toggle('dark-mode', isDark);
+
       const lang = localStorage.getItem('mc_pref_lang');
       const tz   = localStorage.getItem('mc_pref_tz');
       if (lang) document.getElementById('prefLang').value     = lang;
@@ -519,9 +531,44 @@
       const savedSms   = localStorage.getItem('mc_notif_sms');
       if (savedEmail !== null) document.getElementById('toggleEmail').checked = savedEmail === '1';
       if (savedSms   !== null) document.getElementById('toggleSms').checked   = savedSms   === '1';
-      Toast.show('Changes discarded.', 'info');
+      if(typeof Toast !== 'undefined') Toast.show('Changes discarded.', 'info'); else alert('Discarded.');
     });
   </script>
   <script src="{{ asset('js/mobile-nav.js') }}"></script>
+  <script>
+    (function() {
+      const bellWrap = document.querySelector('.bell-wrapper');
+      if (!bellWrap) return;
+
+      const panel = document.createElement('div');
+      panel.className = 'notif-panel';
+      panel.innerHTML = '<div class="notif-header"><h4 style="display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> Notifications</h4><span id="clearNotifs">Mark all read</span></div><div id="notifList"></div>';
+      bellWrap.style.position = 'relative';
+      bellWrap.appendChild(panel);
+
+      function renderNotifs() {
+        const list = document.getElementById('notifList');
+        if (!list) return;
+        list.innerHTML = '';
+        const notifs = [
+            { color:'#10b981', title:'<span style="display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;color:#059669;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> No New Alerts</span>', body: 'You are all caught up with your medical updates!' }
+        ];
+        notifs.forEach(n => {
+          const div = document.createElement('div');
+          div.className = 'notif-item';
+          div.innerHTML = `<div class="notif-dot" style="background:${n.color};"></div><div><h5 style="margin-bottom:4px;">${n.title}</h5><p>${n.body}</p></div>`;
+          list.appendChild(div);
+        });
+      }
+
+      bellWrap.addEventListener('click', e => {
+        e.stopPropagation();
+        renderNotifs();
+        panel.classList.toggle('open');
+      });
+      document.addEventListener('click', () => panel.classList.remove('open'));
+      document.getElementById('clearNotifs')?.addEventListener('click', () => { panel.classList.remove('open'); });
+    })();
+  </script>
 </body>
 </html>

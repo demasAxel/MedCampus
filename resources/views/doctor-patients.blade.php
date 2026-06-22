@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Today's Patients - MedCampus</title>
   <link rel="stylesheet" href="{{ asset('css/doctor.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
   <style>
     .btn-filter-active {
       border-color: var(--primary-green) !important;
@@ -16,6 +22,18 @@
       padding: 40px; text-align: center; color: var(--text-gray);
       background: var(--bg-gray); border-radius: 8px; font-size: 14px;
     }
+
+    .notif-panel { position:absolute; right:0; top:calc(100% + 8px); width:320px; background:var(--white); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:200; display:none; overflow:hidden; }
+    .notif-panel.open { display:block; }
+    .notif-header { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+    .notif-header h4 { font-size:14px; font-weight:700; margin:0; }
+    .notif-header span { font-size:11px; color:var(--primary-green); font-weight:600; cursor:pointer; }
+    .notif-item { padding:14px 18px; border-bottom:1px solid var(--border); cursor:pointer; transition:.15s; display:flex; gap:12px; }
+    .notif-item:hover { background:var(--bg-gray); }
+    .notif-item:last-child { border-bottom:none; }
+    .notif-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .notif-item h5 { font-size:13px; margin-bottom:3px; margin-top:0; }
+    .notif-item p  { font-size:11px; color:var(--text-gray); margin:0; }
   </style>
 </head>
 <body>
@@ -38,7 +56,9 @@
         <a href="{{ url('/doctor/schedule') }}">Schedule</a>
       </div>
       <div class="nav-profile" style="position: relative; display: flex; align-items: center; gap: 16px;">
-        <div class="bell-wrapper"><div class="icon-btn">🔔</div></div>
+        <div class="bell-wrapper" style="color:var(--text-gray);cursor:pointer;display:flex;align-items:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        </div>
         <div id="mcProfileToggle" onclick="toggleProfileDropdown(event)" style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; background: var(--bg-gray); padding: 4px 12px 4px 4px; border-radius: 24px;">
           <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--light-green); color: var(--primary-green); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">
             {{ strtoupper(substr(Auth::user()->user_name, 0, 2)) }}
@@ -117,7 +137,9 @@
                 <td><span class="queue-badge">{{ $p->queue_number }}</span></td>
                 <td>
                   <div class="patient-cell">
-                    <div class="patient-avatar">👤</div>
+                    <div class="patient-avatar" style="background:#cbd5e1;color:#fff;display:flex;align-items:center;justify-content:center;border-radius:50%;width:36px;height:36px;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
                     <div class="patient-info">
                       <h4>{{ $p->name }}</h4>
                       <p>{{ $p->gender == 'M' ? 'Male' : 'Female' }}, {{ $age }} yrs</p>
@@ -140,8 +162,12 @@
           </tbody>
         </table>
         
-        <div id="emptyState" class="empty-state" style="{{ $remainingCount > 0 ? 'display:none;' : '' }}">
-          No patients found for this category.
+        <div id="emptyState" class="empty-state" style="{{ $remainingCount > 0 ? 'display:none;' : '' }} padding:60px 24px; background:transparent; border:1px dashed var(--border);">
+          <div style="margin-bottom:12px;color:#cbd5e1;display:flex;justify-content:center;">
+             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><line x1="9" y1="14" x2="15" y2="14"></line><line x1="9" y1="10" x2="15" y2="10"></line></svg>
+          </div>
+          <h3 style="color:var(--dark-navy);font-size:16px;margin-bottom:4px;">No Patients Found</h3>
+          <p style="font-size:13px;color:var(--text-gray);margin:0;">There are no patients matching your current filter.</p>
         </div>
       </div>
       <div class="flex-between" style="padding:16px 24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-gray);">
@@ -219,6 +245,41 @@
     // Pasang alat pendeteksi ketikan di Search Bar
     document.getElementById('searchPatients').addEventListener('input', filterTable);
 
+  </script>
+  <script>
+    (function() {
+      const bellWrap = document.querySelector('.bell-wrapper');
+      if (!bellWrap) return;
+
+      const panel = document.createElement('div');
+      panel.className = 'notif-panel';
+      panel.innerHTML = '<div class="notif-header"><h4 style="display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> Notifications</h4><span id="clearNotifs">Mark all read</span></div><div id="notifList"></div>';
+      bellWrap.style.position = 'relative';
+      bellWrap.appendChild(panel);
+
+      function renderNotifs() {
+        const list = document.getElementById('notifList');
+        if (!list) return;
+        list.innerHTML = '';
+        const notifs = [
+            { color:'#3b82f6', title:'<span style="display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;color:#2563eb;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Reminder</span>', body: 'Afternoon shift begins in 30 mins.' }
+        ];
+        notifs.forEach(n => {
+          const div = document.createElement('div');
+          div.className = 'notif-item';
+          div.innerHTML = `<div class="notif-dot" style="background:${n.color};"></div><div><h5 style="margin-bottom:4px;">${n.title}</h5><p>${n.body}</p></div>`;
+          list.appendChild(div);
+        });
+      }
+
+      bellWrap.addEventListener('click', e => {
+        e.stopPropagation();
+        renderNotifs();
+        panel.classList.toggle('open');
+      });
+      document.addEventListener('click', () => panel.classList.remove('open'));
+      document.getElementById('clearNotifs')?.addEventListener('click', () => { panel.classList.remove('open'); });
+    })();
   </script>
 </body>
 </html>

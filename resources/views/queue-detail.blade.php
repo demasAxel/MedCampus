@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Queue Details - MedCampus</title>
   <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+
+  <script>
+    if (localStorage.getItem('mc_dark_mode') === '1') {
+        document.documentElement.classList.add('dark-mode');
+    }
+  </script>
 </head>
 <body>
   <nav class="navbar">
@@ -107,7 +113,7 @@
           <div>
             <div class="flex-between" style="margin-bottom:8px;">
               <h3 style="display:flex;align-items:center;gap:8px;font-size:18px;">
-                <span style="color:var(--primary-green);">👥</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-green);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                 <span>{{ $aheadCount }} people ahead of you</span>
               </h3>
               <span style="font-size:13px;font-weight:600;color:var(--primary-green);">{{ $progress }}% Complete</span>
@@ -116,15 +122,21 @@
               <div style="background:var(--primary-green);height:100%;width:{{ $progress }}%;transition:width 0.5s;"></div>
             </div>
             <p style="font-size:13px;color:var(--text-gray);margin-top:12px;display:flex;align-items:center;gap:6px;">
-              <span>ⓘ</span> You are almost next. Please stay near the waiting area.
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              You are almost next. Please stay near the waiting area.
             </p>
           </div>
         </div>
 
         <div style="display:flex;gap:16px;">
-          <a href="{{ url('/patient/ticket') }}" class="btn btn-primary" style="flex:1;font-size:15px;text-align:center;text-decoration:none;">📥 Download Ticket</a>
-          <!-- TOMBOL ANTI BADAI (Pakai classList.add) -->
-          <button onclick="document.getElementById('cancelModal').classList.add('active')" type="button" class="btn btn-outline" style="flex:1;background:var(--bg-gray);border:1px solid var(--border);font-size:15px;">⊗ Cancel Appointment</button>
+          <a href="{{ url('/patient/ticket') }}" class="btn btn-primary" style="flex:1;font-size:15px;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> 
+            Download Ticket
+          </a>
+          <button onclick="document.getElementById('cancelModal').classList.add('active')" type="button" class="btn btn-outline" style="flex:1;background:var(--bg-gray);border:1px solid var(--border);font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> 
+            Cancel Appointment
+          </button>
         </div>
       </div> <!-- Akhir Sisi Kiri -->
 
@@ -134,7 +146,9 @@
           <h2 style="font-size:20px;margin-bottom:32px;">Appointment Details</h2>
 
           <div class="detail-item" style="display:flex;gap:16px;margin-bottom:24px;">
-            <div style="font-size:24px;">🏥</div>
+            <div style="color:var(--primary-green);display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"></path><path d="M10 9h4"></path><path d="M12 7v4"></path></svg>
+            </div>
             <div>
               <p style="font-size:13px;color:var(--text-gray);margin-bottom:2px;">Clinic</p>
               <p style="font-weight:600;font-size:15px;">{{ $activeQueue->clinic }}</p>
@@ -142,7 +156,9 @@
           </div>
 
           <div class="detail-item" style="display:flex;gap:16px;margin-bottom:24px;">
-            <div style="font-size:24px;">👨‍⚕️</div>
+            <div style="color:var(--primary-green);display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
             <div>
               <p style="font-size:13px;color:var(--text-gray);margin-bottom:2px;">Doctor</p>
               <p style="font-weight:600;font-size:15px;">{{ $activeQueue->doctor_name }}</p>
@@ -151,7 +167,9 @@
           </div>
 
           <div class="detail-item" style="display:flex;gap:16px;margin-bottom:24px;">
-            <div style="font-size:24px;">🕒</div>
+            <div style="color:var(--primary-green);display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
             <div>
               <p style="font-size:13px;color:var(--text-gray);margin-bottom:2px;">Estimated Service Time</p>
               <p style="font-weight:600;font-size:15px;">Today, {{ $estimatedTime }} WIB</p>
@@ -159,7 +177,9 @@
           </div>
 
           <div class="detail-item" style="display:flex;gap:16px;margin-bottom:32px;">
-            <div style="font-size:24px;">💬</div>
+            <div style="color:#d97706;display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            </div>
             <div>
               <p style="font-size:13px;color:var(--text-gray);margin-bottom:2px;">Status</p>
               <p style="font-weight:600;font-size:15px;color:#d97706;">
@@ -167,10 +187,12 @@
               </p>
             </div>
           </div>
+        </div>
 
           <div style="background:#f8fafc;padding:16px;border-radius:8px;border:1px solid var(--border);">
             <h4 style="font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
-              <span style="color:var(--primary-green);">🔔</span> Instructions
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-green);"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> 
+              Instructions
             </h4>
             <p style="font-size:13px;color:var(--text-gray);line-height:1.6;">
               Please arrive 10 minutes early. Have your health card and identification ready for verification at the reception desk.
