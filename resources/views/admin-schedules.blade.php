@@ -41,6 +41,45 @@
     .del-overlay.active { opacity:1; pointer-events:auto; }
     .del-card { background:#fff; border-radius:12px; padding:28px 32px; max-width:400px; width:100%; box-shadow:0 20px 40px rgba(0,0,0,.15); transform:translateY(20px); transition:transform .2s ease-in-out; }
     .del-overlay.active .del-card { transform:translateY(0); }
+    html.dark-mode {
+      --white: #242938 !important;
+      --bg-gray: #1a1f2e !important;
+      --dark-navy: #f8fafc !important;
+      --text-gray: #94a3b8 !important;
+      --border: #2d3748 !important;
+      --light-green: #064e3b !important;
+    }
+    html.dark-mode .card,
+    html.dark-mode .table-container,
+    html.dark-mode .admin-schedule-header,
+    html.dark-mode .admin-schedule-day {
+      background: var(--white) !important;
+      border-color: var(--border) !important;
+    }
+    html.dark-mode th {
+      background: var(--bg-gray) !important;
+      border-color: var(--border) !important;
+      color: var(--text-gray) !important;
+    }
+    html.dark-mode td {
+      border-color: var(--border) !important;
+    }
+    html.dark-mode input, 
+    html.dark-mode select, 
+    html.dark-mode option {
+      background-color: var(--bg-gray) !important;
+      color: var(--dark-navy) !important;
+      border-color: var(--border) !important;
+    }
+    html.dark-mode .btn-outline {
+      background: transparent !important;
+      color: var(--text-gray) !important;
+      border-color: var(--border) !important;
+    }
+    html.dark-mode .btn-outline:hover {
+      background: var(--bg-gray) !important;
+      color: var(--dark-navy) !important;
+    }
   </style>
 </head>
 <body>

@@ -39,10 +39,9 @@
         </div>
 
         <!-- Menu Dropdown Pop-up -->
-        <div id="mcDropdownMenu" style="display: none; position: absolute; top: 115%; right: 0; background: white; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); width: 220px; z-index: 999; overflow: hidden;">
+        <div id="mcDropdownMenu" style="display: none; position: absolute; top: 115%; right: 0; background: var(--white); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); width: 220px; z-index: 999; overflow: hidden;">
           
-          <!-- Info Singkat di dalam Dropdown -->
-          <div style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: #f8fafc;">
+          <div style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--bg-gray);">
              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px;">
                 {{ strtoupper(substr(Auth::user()->user_name, 0, 2)) }}
              </div>
@@ -57,7 +56,7 @@
             My Profile
           </a>
           
-          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             Logout
           </a>
@@ -130,7 +129,6 @@
                     $isFirst = $index === 0;
                     $borderColor = $isFirst ? 'var(--primary-green)' : 'var(--border)';
                     $bgClass = $isFirst ? 'var(--light-green)' : 'var(--white)';
-                    $rating = ['4.7', '4.8', '4.9', '5.0'][$index % 4];
                     $spec = $doc->department ?? 'General Practitioner';
                 @endphp
                 <div class="doc-card" data-doc-id="{{ $doc->id_user }}" data-doc-name="{{ $doc->user_name }}" data-spec="{{ $spec }}"
@@ -144,10 +142,6 @@
                       <p style="font-size:12px;color:var(--text-gray);">{{ $spec }}</p>
                     </div>
                   </div>
-                  <span class="badge" style="background:#fef3c7;color:#b45309;font-size:11px;display:flex;align-items:center;gap:4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    {{ $rating }}
-                  </span>
                 </div>
               @empty
                 <p style="color:var(--text-gray);font-size:13px;padding:12px;">No doctors available right now.</p>
@@ -210,12 +204,11 @@
   <script src="{{ asset('js/utils.js') }}"></script>
   <script>
     let selectedClinic = 'General Clinic';
-    let selectedSlot   = null; // Diubah jadi null karena belum tahu shiftnya
+    let selectedSlot   = null;
     let selectedDoctorId = null;
     let selectedDoctorName = '';
     let selectedDoctorSpec = '';
 
-    // 1. Pilih Klinik
     document.querySelectorAll('#clinicGrid .select-card').forEach(card => {
       card.addEventListener('click', () => {
         document.querySelectorAll('#clinicGrid .select-card').forEach(c => c.classList.remove('active'));
@@ -225,35 +218,34 @@
       });
     });
 
-    // 🌟 2. FUNGSI AJAX: MENGAMBIL SHIFT ASLI DARI DATABASE
     function fetchShifts() {
         const dateRaw = document.getElementById('appointmentDate').value;
         const slotGrid = document.getElementById('slotGrid');
         
         if (!selectedDoctorId || !dateRaw) return;
 
-        // Tampilkan teks loading
         slotGrid.innerHTML = '<div style="grid-column: 1 / -1; display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-gray); font-style:italic;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Checking doctor availability...</div>';
         selectedSlot = null;
         document.getElementById('summary-slot').textContent = '—';
 
-        // Panggil API Laravel
         fetch(`/api/doctor-shifts?doctor_id=${selectedDoctorId}&date=${dateRaw}`)
             .then(res => res.json())
             .then(data => {
-                slotGrid.innerHTML = ''; // Bersihkan loading
+                slotGrid.innerHTML = '';
 
                 if (data.length === 0) {
                     slotGrid.innerHTML = '<div style="grid-column: 1 / -1; display:flex; align-items:center; gap:8px; font-size:13px; color:#ef4444; font-weight:700;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> No shifts available for this doctor on the selected date.</div>';
                     return;
                 }
 
-                // Gambar ulang tombol Shift sesuai data Admin!
                 data.forEach((jadwal, index) => {
                     let timeLabel = 'Available';
-                    if(jadwal.shift.toLowerCase().includes('morning')) timeLabel = '08:00 - 12:00';
-                    else if(jadwal.shift.toLowerCase().includes('afternoon')) timeLabel = '13:00 - 17:00';
-                    else timeLabel = jadwal.shift; // Kalau admin ngetik shift aneh
+                    let sName = jadwal.shift.toLowerCase();
+                    
+                    if(sName.includes('morning')) timeLabel = '08:00 - 12:00';
+                    else if(sName.includes('afternoon')) timeLabel = '13:00 - 17:00';
+                    else if(sName.includes('evening')) timeLabel = '18:00 - 21:00';
+                    else timeLabel = jadwal.shift;
 
                     const div = document.createElement('div');
                     div.className = 'select-card' + (index === 0 ? ' active' : '');
@@ -264,20 +256,18 @@
                         <p style="color:var(--primary-green);">${timeLabel}</p>
                     `;
 
-                    // Event Listener untuk tombol shift baru
                     div.addEventListener('click', () => {
                         document.querySelectorAll('#slotGrid .select-card').forEach(c => c.classList.remove('active'));
                         div.classList.add('active');
                         selectedSlot = jadwal.shift;
-                        document.getElementById('summary-slot').textContent = jadwal.shift + ' WIB';
+                        document.getElementById('summary-slot').textContent = jadwal.shift + ' (' + timeLabel + ') WIB';
                     });
 
                     slotGrid.appendChild(div);
 
-                    // Pilih shift pertama secara otomatis
                     if(index === 0) {
                         selectedSlot = jadwal.shift;
-                        document.getElementById('summary-slot').textContent = jadwal.shift + ' WIB';
+                        document.getElementById('summary-slot').textContent = jadwal.shift + ' (' + timeLabel + ') WIB';
                     }
                 });
             })
@@ -286,7 +276,6 @@
             });
     }
 
-    // 3. Setup Tanggal & Picu AJAX saat tanggal diganti
     const dateInput = document.getElementById('appointmentDate');
     const today = new Date().toISOString().slice(0,10);
     dateInput.min = today;
@@ -295,11 +284,10 @@
     dateInput.addEventListener('change', () => {
       const d = new Date(dateInput.value);
       document.getElementById('summary-date').textContent = d.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-      fetchShifts(); // <-- Panggil AJAX
+      fetchShifts();
     });
-    dateInput.dispatchEvent(new Event('change')); // Trigger pertama kali
+    dateInput.dispatchEvent(new Event('change'));
 
-    // 4. Pilih Dokter & Picu AJAX saat dokter diganti
     const docCards = document.querySelectorAll('.doc-card');
     docCards.forEach(card => {
         card.addEventListener('click', () => {
@@ -315,11 +303,10 @@
             selectedDoctorSpec = card.dataset.spec;
             document.getElementById('summary-doctor').textContent = selectedDoctorName;
             
-            fetchShifts(); // <-- Panggil AJAX
+            fetchShifts();
         });
     });
 
-    // Pilih dokter pertama secara otomatis saat baru buka halaman
     if(docCards.length > 0) {
         selectedDoctorId = docCards[0].dataset.docId;
         selectedDoctorName = docCards[0].dataset.docName;
@@ -328,19 +315,16 @@
         fetchShifts(); // <-- Panggil AJAX
     }
 
-    // 5. Tombol Proceed To Checkout
     document.getElementById('btnConfirmPay').addEventListener('click', () => {
       const date = document.getElementById('appointmentDate').value;
       const alertModal = document.getElementById('alertModal');
       const alertMsg = document.getElementById('alertMessage');
 
-      // Fungsi ajaib pemanggil popup custom
       function showError(msg) {
           alertMsg.textContent = msg;
           alertModal.classList.add('active');
       }
 
-      // Validasi menggunakan custom popup (bukan alert browser lagi)
       if (!date) { showError('Please select an appointment date first.'); return; }
       if (!selectedDoctorId) { showError('Please select a doctor from the list.'); return; }
       if (!selectedSlot) { 
@@ -348,7 +332,19 @@
           return; 
       }
 
-      // Jika lolos validasi, lanjut ke checkout
+      let consultationFee = 150000;
+      
+      if (selectedClinic === 'Dental Clinic') {
+          consultationFee = 250000;
+      } else if (selectedClinic === 'Emergency Care') {
+          consultationFee = 350000;
+      }
+      
+      let adminFee = 15000;
+      let totalFee = consultationFee + adminFee;
+
+      const formatRp = (angka) => 'Rp ' + angka.toLocaleString('id-ID');
+
       const bookingData = {
         clinic: selectedClinic,
         doctor_id: selectedDoctorId,
@@ -357,7 +353,10 @@
         date_raw: date,
         date: document.getElementById('summary-date').textContent,
         slot: selectedSlot,
-        fee: 'Rp 150.000', adminFee: 'Rp 15.000', total: 'Rp 165.000'
+        slot_display: document.getElementById('summary-slot').textContent,
+        fee: formatRp(consultationFee), 
+        adminFee: formatRp(adminFee), 
+        total: formatRp(totalFee)
       };
       
       sessionStorage.setItem('mc_booking', JSON.stringify(bookingData));
@@ -365,5 +364,41 @@
     });
   </script>
   <script src="{{ asset('js/mobile-nav.js') }}"></script>
+
+  <script>
+    (function() {
+      const bellWrap = document.querySelector('.bell-wrapper');
+      if (!bellWrap) return;
+
+      const panel = document.createElement('div');
+      panel.className = 'notif-panel';
+      panel.innerHTML = '<div class="notif-header"><h4 style="display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> Notifications</h4><span id="clearNotifs">Mark all read</span></div><div id="notifList"></div>';
+      bellWrap.style.position = 'relative';
+      bellWrap.appendChild(panel);
+
+      function renderNotifs() {
+        const list = document.getElementById('notifList');
+        if (!list) return;
+        list.innerHTML = '';
+        const notifs = [
+            { color:'#94a3b8', title:'<span style="display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;color:#059669;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> All Clear</span>', body: 'No new notifications right now.' }
+        ];
+        notifs.forEach(n => {
+          const div = document.createElement('div');
+          div.className = 'notif-item';
+          div.innerHTML = `<div class="notif-dot" style="background:${n.color};"></div><div><h5 style="margin-bottom:4px;">${n.title}</h5><p>${n.body}</p></div>`;
+          list.appendChild(div);
+        });
+      }
+
+      bellWrap.addEventListener('click', e => {
+        e.stopPropagation();
+        renderNotifs();
+        panel.classList.toggle('open');
+      });
+      document.addEventListener('click', () => panel.classList.remove('open'));
+      document.getElementById('clearNotifs')?.addEventListener('click', () => { panel.classList.remove('open'); });
+    })();
+  </script>
 </body>
 </html>

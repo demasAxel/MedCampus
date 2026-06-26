@@ -11,14 +11,26 @@
         document.documentElement.classList.add('dark-mode');
     }
   </script>
+
+  <style>
+    html.dark-mode .btn-outline {
+      background-color: transparent !important;
+      color: var(--text-gray) !important;
+      border-color: var(--border) !important;
+    }
+    html.dark-mode .btn-outline:hover {
+      background-color: var(--bg-gray) !important;
+      color: var(--dark-navy) !important;
+    }
+  </style>
 </head>
-<body style="background:#f1f5f9;padding:40px 0;">
+<body style="background:var(--bg-gray);padding:40px 0;">
   <div class="container" style="max-width:800px;margin-bottom:24px;display:flex;justify-content:space-between;">
-    <a href="{{ url('/patient/queue-detail') }}" id="btnTicketBack" class="btn btn-outline" style="background:white;border:1px solid var(--border);text-decoration:none;">← Go Back</a>
+    <a href="{{ url('/patient/queue-detail') }}" id="btnTicketBack" class="btn btn-outline" style="border:1px solid var(--border);text-decoration:none;">← Go Back</a>
     <button class="btn btn-primary" onclick="window.print()">🖨 Print Ticket</button>
   </div>
 
-  <div class="container" style="max-width:800px;background:white;border-radius:16px;overflow:hidden;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);padding:0;">
+  <div class="container" style="max-width:800px;background:var(--white);border-radius:16px;overflow:hidden;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);padding:0;">
     <div class="ticket-head" style="background:var(--primary-green);color:white;padding:32px 40px;display:flex;justify-content:space-between;align-items:center;">
       <div>
         <h3 style="margin:0;font-size:24px;">MedCampus</h3>

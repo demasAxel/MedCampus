@@ -172,3 +172,27 @@ body.dark-mode .admin-schedule-day { border-color:#2d3748; }
 body.dark-mode .admin-schedule-day.active { background:#242938; }
 body.dark-mode .badge-active { background:rgba(34,197,94,0.2); color:#4ade80; }
 body.dark-mode .badge-warning { background:rgba(245,158,11,0.2); color:#fbbf24; }
+
+html.dark-mode body, body.dark-mode {
+  --bg-gray: #1a1f2e;  
+  --white: #242938;     
+  --dark-navy: #f8fafc;    
+  --text-gray: #94a3b8;   
+  --border: #2d3748;      
+  --light-green: #064e3b;  
+}
+
+body, .card, .admin-form-container, .settings-section, table th, table td, input, select, textarea, .notif-panel {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .btn-outline {
+  background-color: transparent !important;
+  color: var(--text-gray) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark-mode .btn-outline:hover {
+  background-color: var(--white) !important;
+  color: var(--dark-navy) !important;
+}

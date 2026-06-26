@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class PatientController extends Controller
 {
-    // 1. Halaman Dashboard Pasien
     public function dashboard()
     {
         $userId = Auth::user()->id_user;
@@ -35,6 +34,8 @@ class PatientController extends Controller
             
             if (stripos($activeQueue->shift, 'afternoon') !== false) {
                 $waktuMulai = strtotime('13:00');
+            } elseif (stripos($activeQueue->shift, 'evening') !== false) {
+                $waktuMulai = strtotime('18:00');
             } elseif (strpos($activeQueue->shift, '-') !== false) {
                 $shiftParts = explode('-', $activeQueue->shift);
                 $waktuMulai = strtotime(trim($shiftParts[0]));
@@ -47,7 +48,6 @@ class PatientController extends Controller
         return view('dashboard', compact('activeQueue', 'estimatedTime'));
     }
 
-    // 2. Halaman Pilih Klinik & Jadwal (Booking)
     public function booking()
     {
         $doctors = DB::table('users')
@@ -60,19 +60,16 @@ class PatientController extends Controller
         return view('booking', compact('doctors'));
     }
 
-    // 3. Halaman Konfirmasi Pembayaran
     public function checkout()
     {
         return view('checkout');
     }
 
-    // 4. Halaman Sukses Booking
     public function success()
     {
         return view('success');
     }
 
-    // 5. Halaman Tiket Digital
     public function ticket()
     {
         $userId = Auth::user()->id_user;
@@ -101,6 +98,8 @@ class PatientController extends Controller
         $waktuMulai = strtotime('08:00');
         if (stripos($activeQueue->shift, 'afternoon') !== false) {
             $waktuMulai = strtotime('13:00');
+        } elseif (stripos($activeQueue->shift, 'evening') !== false) {
+            $waktuMulai = strtotime('18:00');
         } elseif (strpos($activeQueue->shift, '-') !== false) {
             $shiftParts = explode('-', $activeQueue->shift);
             $waktuMulai = strtotime(trim($shiftParts[0]));
@@ -111,13 +110,11 @@ class PatientController extends Controller
         return view('ticket', compact('activeQueue', 'estimatedTime'));
     }
 
-    // 6. Halaman Pantau Antrean Live
     public function queueDetail()
     {
         $userId = Auth::user()->id_user;
         $today = now()->format('Y-m-d');
 
-        // Cari antrean aktif persis seperti di Dashboard
         $activeQueue = DB::table('appointments')
             ->join('doctor_schedules', 'appointments.id_schedule', '=', 'doctor_schedules.id_schedule')
             ->join('users', 'doctor_schedules.id_user', '=', 'users.id_user')
@@ -134,15 +131,15 @@ class PatientController extends Controller
             ->orderBy('appointments.appointment_date', 'asc')
             ->first();
 
-        // Jika tidak ada antrean, tendang balik ke dashboard
         if (!$activeQueue) {
             return redirect('/patient/dashboard');
         }
 
-        // Hitung Estimasi Jam
         $waktuMulai = strtotime('08:00');
         if (stripos($activeQueue->shift, 'afternoon') !== false) {
             $waktuMulai = strtotime('13:00');
+        } elseif (stripos($activeQueue->shift, 'evening') !== false) {
+            $waktuMulai = strtotime('18:00');
         } elseif (strpos($activeQueue->shift, '-') !== false) {
             $shiftParts = explode('-', $activeQueue->shift);
             $waktuMulai = strtotime(trim($shiftParts[0]));
@@ -150,7 +147,6 @@ class PatientController extends Controller
         $tambahanMenit = ($activeQueue->queue_number - 1) * 30;
         $estimatedTime = date('H:i', strtotime("+$tambahanMenit minutes", $waktuMulai));
 
-        // Hitung berapa orang yang antre di depan pasien ini
         $aheadCount = DB::table('appointments')
             ->where('id_schedule', $activeQueue->id_schedule)
             ->whereDate('appointment_date', $activeQueue->appointment_date)
@@ -158,7 +154,6 @@ class PatientController extends Controller
             ->where('queue_number', '<', $activeQueue->queue_number)
             ->count();
         
-        // Simulasi persentase progress
         $totalInSchedule = DB::table('appointments')
             ->where('id_schedule', $activeQueue->id_schedule)
             ->whereDate('appointment_date', $activeQueue->appointment_date)
@@ -171,7 +166,6 @@ class PatientController extends Controller
         return view('queue-detail', compact('activeQueue', 'estimatedTime', 'aheadCount', 'progress'));
     }
 
-    // 7. Halaman Riwayat Rekam Medis
     public function history()
     {
         $userId = Auth::user()->id_user;
@@ -193,13 +187,11 @@ class PatientController extends Controller
         return view('history', compact('histories'));
     }
 
-    // 8. Halaman Detail Kunjungan (Resep Obat, dll)
     public function visitDetail(Request $request)
     {
         $appointmentId = $request->input('id');
         $userId = Auth::user()->id_user;
 
-        // 1. Tarik data Antrean, Dokter, dan Rekam Medis
         $detail = DB::table('appointments')
             ->join('doctor_schedules', 'appointments.id_schedule', '=', 'doctor_schedules.id_schedule')
             ->join('users', 'doctor_schedules.id_user', '=', 'users.id_user')
@@ -221,7 +213,6 @@ class PatientController extends Controller
             return redirect('/patient/history');
         }
 
-        // 2. Tarik data Resep Obat (Hanya jika rekam medis sudah ada)
         $prescriptions = [];
         if (!empty($detail->id_med_records)) {
             $prescriptions = DB::table('medicines_record_medicine')
@@ -239,12 +230,10 @@ class PatientController extends Controller
         return view('visit-detail', compact('detail', 'prescriptions'));
     }
 
-    // 9. Halaman Profil Pasien (Mahasiswa)
     public function profile()
     {
         $userId = Auth::user()->id_user;
 
-        // Tarik gabungan data dari tabel users dan patient_profiles
         $profile = DB::table('users')
             ->leftJoin('patient_profiles', 'users.id_user', '=', 'patient_profiles.id_user')
             ->select('users.*', 'patient_profiles.*')
@@ -254,12 +243,10 @@ class PatientController extends Controller
         return view('patient-profile', compact('profile'));
     }
 
-    // Fungsi untuk menyimpan perubahan Profil Pasien
     public function updateProfile(Request $request)
     {
         $userId = Auth::user()->id_user;
 
-        // Gabungkan First Name dan Last Name untuk tabel users
         $fullName = $request->input('first_name') . ' ' . $request->input('last_name');
         
         DB::table('users')->where('id_user', $userId)->update([
@@ -267,17 +254,14 @@ class PatientController extends Controller
             'user_phone' => $request->input('phone_number'),
         ]);
 
-        // Cek apakah pasien ini sudah punya profil atau belum
         $existingProfile = DB::table('patient_profiles')->where('id_user', $userId)->first();
 
         if ($existingProfile) {
-            // Jika SUDAH ADA (seperti Budi), cukup perbarui datanya saja
             DB::table('patient_profiles')->where('id_user', $userId)->update([
                 'gender'        => $request->input('gender'),
                 'date_of_birth' => $request->input('date_of_birth'),
             ]);
         } else {
-            // Jika BELUM ADA (seperti Coba Coba), buatkan baris baru dan cetak id_patient baru!
             DB::table('patient_profiles')->insert([
                 'id_patient'    => 'PT-' . rand(100000, 999999), 
                 'id_user'       => $userId,
@@ -292,26 +276,21 @@ class PatientController extends Controller
         return redirect('/patient/profile');
     }
 
-    // Fungsi untuk memproses data dari halaman Checkout ke Database
     public function storeBooking(Request $request)
     {
-        // 1. Ambil ID Pasien (Mahasiswa) yang sedang login
         $userId = Auth::user()->id_user;
 
-        // 2. Ambil data yang dikirim dari form Checkout
         $doctorId = $request->input('doctor_id');
-        $dateRaw = $request->input('date_raw'); // format: YYYY-MM-DD
+        $dateRaw = $request->input('date_raw');
         $shiftName = $request->input('slot'); 
         $clinicName = $request->input('clinic');
 
-        // 3. Cari jadwal dokter di tabel doctor_schedules
         $schedule = DB::table('doctor_schedules')
             ->where('id_user', $doctorId)
             ->whereDate('schedule_date', $dateRaw)
             ->where('shift', 'LIKE', "%$shiftName%")
             ->first();
 
-        // 🌟 PERBAIKAN FINAL: Tambahkan kolom 'quota' agar database tidak marah
         if (!$schedule) {
             $idSchedule = 'SC-' . rand(100000, 999999);
             DB::table('doctor_schedules')->insert([
@@ -320,57 +299,50 @@ class PatientController extends Controller
                 'schedule_date' => $dateRaw,
                 'shift'         => $shiftName,
                 'room'          => $clinicName . ' - R.101',
-                'quota'         => 50 // <-- Ini dia penangkal errornya!
+                'quota'         => 50
             ]);
         } else {
             $idSchedule = $schedule->id_schedule;
         }
 
-        // 4. Tentukan Nomor Antrean (Otomatis hitung dari antrean terakhir)
         $lastQueue = DB::table('appointments')
             ->where('id_schedule', $idSchedule)
             ->whereDate('appointment_date', $dateRaw)
             ->max('queue_number');
         
         $newQueue = $lastQueue ? $lastQueue + 1 : 1;
-        $appointmentId = 'AP-' . rand(100000, 999999); // Generate ID Antrean
+        $appointmentId = 'AP-' . rand(100000, 999999);
 
-        // 5. Tembak ke tabel appointments!
         DB::table('appointments')->insert([
             'id_appointments'  => $appointmentId,
             'id_user'          => $userId,
             'id_schedule'      => $idSchedule,
             'appointment_date' => $dateRaw,
             'queue_number'     => $newQueue,
-            'status'           => 'W', // W = Waiting
+            'status'           => 'W',
         ]);
 
-        // 6. Langsung lempar kembali ke Dashboard agar pasien bisa melihat tiketnya
         return redirect('/patient/dashboard');
     }
 
-    // Fungsi untuk membatalkan antrean
     public function cancelAppointment(Request $request)
     {
         $userId = Auth::user()->id_user;
         $appointmentId = $request->input('appointment_id');
 
-        // Ubah status antrean menjadi 'C' (Cancelled) di database
         DB::table('appointments')
             ->where('id_appointments', $appointmentId)
-            ->where('id_user', $userId) // Validasi keamanan agar hanya bisa membatalkan miliknya sendiri
+            ->where('id_user', $userId)
             ->update(['status' => 'C']);
 
-        // Lempar kembali ke dashboard, sistem akan otomatis membaca "No Active Queue"
         return redirect('/patient/dashboard');
     }
 
     public function getDoctorShifts(Request $request)
     {
         $doctorId = $request->query('doctor_id');
-        $date = $request->query('date'); // Format: YYYY-MM-DD
+        $date = $request->query('date');
 
-        // Cari jadwal yang BENAR-BENAR dibuat Admin di database
         $shifts = DB::table('doctor_schedules')
             ->where('id_user', $doctorId)
             ->whereDate('schedule_date', $date)

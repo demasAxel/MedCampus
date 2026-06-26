@@ -11,6 +11,25 @@
         document.documentElement.classList.add('dark-mode');
     }
   </script>
+
+  <style>
+    html.dark-mode .btn-outline {
+      background-color: transparent !important;
+      color: var(--text-gray) !important;
+      border-color: var(--border) !important;
+    }
+    html.dark-mode .btn-outline:hover {
+      background-color: var(--bg-gray) !important;
+      color: var(--dark-navy) !important;
+    }
+    html.dark-mode p[style*="#f8fafc"], 
+    html.dark-mode div[style*="#f8fafc"],
+    html.dark-mode div[style*="background:#f8fafc"],
+    html.dark-mode div[style*="background: #f8fafc"] {
+      background-color: var(--bg-gray) !important;
+      color: var(--dark-navy) !important;
+    }
+  </style>
 </head>
 <body>
   <nav class="navbar">
@@ -36,10 +55,9 @@
         </div>
 
         <!-- Menu Dropdown Pop-up -->
-        <div id="mcDropdownMenu" style="display: none; position: absolute; top: 115%; right: 0; background: white; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); width: 220px; z-index: 999; overflow: hidden;">
+        <div id="mcDropdownMenu" style="display: none; position: absolute; top: 115%; right: 0; background: var(--white); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); width: 220px; z-index: 999; overflow: hidden;">
           
-          <!-- Info Singkat di dalam Dropdown -->
-          <div style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: #f8fafc;">
+          <div style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--bg-gray);">
              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-green); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px;">
                 {{ strtoupper(substr(Auth::user()->user_name, 0, 2)) }}
              </div>
@@ -54,7 +72,7 @@
             My Profile
           </a>
           
-          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+          <a href="{{ url('/logout') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #dc2626; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; border-top: 1px solid var(--border);" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             Logout
           </a>
@@ -139,7 +157,7 @@
       </h3>
 
       @if(!$detail->diagnosis)
-        <div style="background:#f8fafc; border:1px dashed #cbd5e1; padding:24px; text-align:center; border-radius:8px; color:var(--text-gray);">
+        <div style="background:var(--bg-gray); border:1px solid var(--border); padding:24px; text-align:center; border-radius:8px; color:var(--text-gray);">
           <div style="margin-bottom:12px;color:#94a3b8;display:flex;justify-content:center;">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
           </div>
@@ -156,7 +174,7 @@
         
         <div style="margin-bottom:24px;">
           <p style="font-size:12px; color:var(--text-gray); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Doctor's Notes</p>
-          <div style="white-space: pre-wrap; line-height: 1.6; background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid var(--border); color: var(--dark-navy); font-size: 14px;">
+          <div style="white-space: pre-wrap; line-height: 1.6; background: var(--bg-gray); color: var(--dark-navy); padding: 16px; border-radius: 8px; border: 1px solid var(--border); color: var(--dark-navy); font-size: 14px;">
               {!! nl2br(e($detail->notes)) !!}
           </div>
         </div>
@@ -164,10 +182,10 @@
         <!-- Prescription Asli dari Database -->
         <div>
           <p style="font-size:12px; color:var(--text-gray); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Prescription (Rx)</p>
-          <div style="background:#fefce8; border:1px solid #fef08a; padding:16px; border-radius:8px;">
+          <div style="background:var(--bg-gray); border:1px solid var(--border); padding:16px; border-radius:8px;">
             
             @if(count($prescriptions) > 0)
-              <ul style="list-style-type:none; margin:0; padding:0; font-family:var(--font-main); font-size:14px; color:#854d0e; font-weight:600;">
+              <ul style="list-style-type:none; margin:0; padding:0; font-family:var(--font-main); font-size:14px; color:var(--dark-navy);; font-weight:600;">
                 @foreach($prescriptions as $index => $rx)
                   <li style="margin-bottom:8px; display:flex; align-items:flex-start; gap:8px;">
                     <span>{{ $index + 1 }}.</span>
@@ -179,7 +197,7 @@
                 @endforeach
               </ul>
             @else
-              <p style="font-family:var(--font-main); font-size:14px; margin:0; color:#854d0e; font-weight:500;">
+              <p style="font-family:var(--font-main); font-size:14px; margin:0; color:var(--dark-navy);; font-weight:500;">
                 No prescription items recorded for this visit.
               </p>
             @endif

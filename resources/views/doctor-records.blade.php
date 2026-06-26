@@ -58,9 +58,15 @@
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-gray);margin-left:2px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
 
-        <div id="mcProfileDropdown" style="position: absolute; top: calc(100% + 10px); right: 0; background: #fff; width: 170px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid var(--border); display: none; flex-direction: column; overflow: hidden; z-index: 1000; text-align: left;">
-          <a href="{{ url('/doctor/profile') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--dark-navy); text-decoration: none; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> My Profile</a>
-          <a href="{{ url('/logout') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--dark-navy); text-decoration: none; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Logout</a>
+        <div id="mcProfileDropdown" style="position: absolute; top: calc(100% + 10px); right: 0; background: var(--white); width: 170px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid var(--border); display: none; flex-direction: column; overflow: hidden; z-index: 1000; text-align: left; transition: 0.3s;">
+          <a href="{{ url('/doctor/profile') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--dark-navy); text-decoration: none; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> 
+            My Profile
+          </a>
+          <a href="{{ url('/logout') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #ef4444; text-decoration: none; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> 
+            Logout
+          </a>
         </div>
       </div>
     </div>
@@ -95,18 +101,18 @@
   </main>
 
   <div id="detailModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,22,35,0.6);display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:0.2s;">
-    <div style="background:#fff;width:100%;max-width:550px;border-radius:16px;padding:32px;box-shadow:0 20px 40px rgba(0,0,0,0.15);transform:translateY(16px);transition:0.2s;" id="modalCard">
+    <div style="background:var(--white);width:100%;max-width:550px;border-radius:16px;padding:32px;box-shadow:0 20px 40px rgba(0,0,0,0.15);transform:translateY(16px);transition:0.2s;" id="modalCard">
       <div class="flex-between" style="margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px;">
         <div>
-          <h3 style="font-size:20px;margin-bottom:4px;" id="m-patient">Patient Name</h3>
+          <h3 style="font-size:20px;margin-bottom:4px;color:var(--dark-navy);" id="m-patient">Patient Name</h3>
           <p style="font-size:12px;color:var(--text-gray);" id="m-id">Record ID: -</p>
         </div>
         <button style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-gray);" onclick="closeModal()">✕</button>
       </div>
       
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;background:var(--bg-gray);padding:16px;border-radius:12px;">
-        <div><label style="font-size:11px;color:var(--text-gray);font-weight:700;display:block;margin-bottom:4px;">DATE OF VISIT</label><span style="font-size:13px;font-weight:600;" id="m-date">-</span></div>
-        <div><label style="font-size:11px;color:var(--text-gray);font-weight:700;display:block;margin-bottom:4px;">DOCTOR IN CHARGE</label><span style="font-size:13px;font-weight:600;" id="m-doctor">-</span></div>
+        <div><label style="font-size:11px;color:var(--text-gray);font-weight:700;display:block;margin-bottom:4px;">DATE OF VISIT</label><span style="font-size:13px;font-weight:600;color:var(--dark-navy);" id="m-date">-</span></div>
+        <div><label style="font-size:11px;color:var(--text-gray);font-weight:700;display:block;margin-bottom:4px;">DOCTOR IN CHARGE</label><span style="font-size:13px;font-weight:600;color:var(--dark-navy);" id="m-doctor">-</span></div>
       </div>
 
       <div style="margin-bottom:20px;">
@@ -116,7 +122,7 @@
 
       <div style="margin-bottom:20px;">
         <label style="font-size:11px;color:var(--text-gray);font-weight:700;display:block;margin-bottom:8px;">DIAGNOSIS / CLINICAL NOTES</label>
-        <p style="font-size:14px;line-height:1.6;color:var(--dark-navy);background:#f8fafc;padding:16px;border-radius:8px;border:1px solid var(--border);white-space:pre-wrap;" id="m-notes">-</p>
+        <p style="font-size:14px;line-height:1.6;color:var(--dark-navy);background:var(--bg-gray);padding:16px;border-radius:8px;border:1px solid var(--border);white-space:pre-wrap;" id="m-notes">-</p>
       </div>
       <div style="text-align:right;"><button class="btn btn-outline" onclick="closeModal()">Close Details</button></div>
     </div>

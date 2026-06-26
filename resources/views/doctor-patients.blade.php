@@ -66,12 +66,14 @@
           <span style="font-size: 13px; font-weight: 600; color: var(--dark-navy);">{{ Auth::user()->user_name }}</span>
           <span style="font-size: 10px; color: var(--text-gray); margin-left: 4px;">▼</span>
         </div>
-        <div id="mcProfileDropdown" style="position: absolute; top: calc(100% + 10px); right: 0; background: #fff; width: 170px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid var(--border); display: none; flex-direction: column; overflow: hidden; z-index: 1000; text-align: left;">
+        <div id="mcProfileDropdown" style="position: absolute; top: calc(100% + 10px); right: 0; background: var(--white); width: 170px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid var(--border); display: none; flex-direction: column; overflow: hidden; z-index: 1000; text-align: left; transition: 0.3s;">
           <a href="{{ url('/doctor/profile') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--dark-navy); text-decoration: none; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> My Profile
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> 
+            My Profile
           </a>
-          <a href="{{ url('/logout') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--dark-navy); text-decoration: none; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Logout
+          <a href="{{ url('/logout') }}" style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #ef4444; text-decoration: none; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='var(--bg-gray)'" onmouseout="this.style.background='transparent'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> 
+            Logout
           </a>
         </div>
       </div>
@@ -102,64 +104,54 @@
       <div class="table-container">
         <table>
           <thead>
-            <tr><th>Queue No.</th><th>Patient Name</th><th>Time</th><th>Visit Type</th><th>Status</th><th>Actions</th></tr>
+            <tr><th>Queue No.</th><th>Patient Name</th><th>Time</th><th>Status</th><th>Actions</th></tr>
           </thead>
-          <tbody id="patientTbody">
-            @forelse($patients as $p)
-              @php
-                  // Hitung umur pasien
-                  $age = \Carbon\Carbon::parse($p->date_of_birth)->age;
-                  
-                  // Label Status
-                  $statusLabel = 'Waiting';
-                  $badgeClass = 'badge-waiting';
-                  if ($p->status == 'I') { $statusLabel = 'In Progress'; $badgeClass = 'badge-consultation'; }
-                  if ($p->status == 'F') { $statusLabel = 'Completed'; $badgeClass = 'badge-completed'; }
-                  
-                  // 🌟 LOGIKA WAKTU (Menyamakan dengan Dashboard - Versi Multi-Shift)
-                  $time = '00:00';
-                  if (!empty($p->shift)) {
-                      $shiftStr = strtolower($p->shift);
-                      if (str_contains($shiftStr, 'morning')) {
-                          $waktuMulai = strtotime('08:00');
-                      } elseif (str_contains($shiftStr, 'afternoon')) {
-                          $waktuMulai = strtotime('13:00');
-                      } else {
-                          $shiftParts = explode(' - ', $p->shift);
-                          $waktuMulai = strtotime($shiftParts[0]);
-                      }
-                      $tambahanMenit = ($p->queue_number - 1) * 30; // Jeda 30 Menit
-                      $time = date('H:i', strtotime("+$tambahanMenit minutes", $waktuMulai));
-                  }
-              @endphp
+          <tbody id="patientsTbody">
+                @forelse($patients as $p)
+                    @php
+                        $statusText = $p->status == 'W' ? 'Waiting' : ($p->status == 'I' ? 'In Progress' : 'Completed');
+                        $statusClass = $p->status == 'W' ? 'badge-waiting' : ($p->status == 'I' ? 'badge-consultation' : 'badge-completed');
+                        $btnLabel = $p->status == 'W' ? 'Start Exam' : ($p->status == 'I' ? 'Resume' : 'View Record');
+                        $btnClass = ($p->status == 'C' || $p->status == 'F') ? 'btn-outline' : 'btn-primary';
+                        $age = $p->date_of_birth ? \Carbon\Carbon::parse($p->date_of_birth)->age : '?';
+                        
+                        $time = '00:00';
 
-              <tr class="patient-row" data-status="{{ $p->status }}" style="{{ $p->status == 'F' ? 'display:none;' : '' }}">
-                <td><span class="queue-badge">{{ $p->queue_number }}</span></td>
-                <td>
-                  <div class="patient-cell">
-                    <div class="patient-avatar" style="background:#cbd5e1;color:#fff;display:flex;align-items:center;justify-content:center;border-radius:50%;width:36px;height:36px;">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    </div>
-                    <div class="patient-info">
-                      <h4>{{ $p->name }}</h4>
-                      <p>{{ $p->gender == 'M' ? 'Male' : 'Female' }}, {{ $age }} yrs</p>
-                    </div>
-                  </div>
-                </td>
-                <td>{{ $time }}</td>
-                <td><span class="badge" style="color:#9333ea;border:1px solid #9333ea;">Consultation</span></td>
-                <td><span class="badge {{ $badgeClass }}">{!! $statusLabel !!}</span></td>
-                <td>
-                  @if($p->status == 'F')
-                      <a href="{{ url('/doctor/records') }}" class="btn btn-outline" style="color:var(--primary-green); border-color:var(--primary-green);">View Record</a>
-                  @else
-                      <a href="{{ url('/doctor/new-entry?appointment_id=' . $p->id_appointments) }}" class="btn btn-primary">Start Exam</a>
-                  @endif
-                </td>
-              </tr>
-            @empty
-              @endforelse
-          </tbody>
+                        if (!empty($p->shift)) {
+                            $shiftStr = strtolower($p->shift);
+                            
+                            if (str_contains($shiftStr, 'morning')) {
+                                $waktuMulai = strtotime('08:00');
+                            } elseif (str_contains($shiftStr, 'afternoon')) {
+                                $waktuMulai = strtotime('13:00');
+                            } elseif (str_contains($shiftStr, 'evening')) {
+                                $waktuMulai = strtotime('18:00');
+                            } else {
+                                $shiftParts = explode('-', $p->shift);
+                                $waktuMulai = strtotime(trim($shiftParts[0]));
+                            }
+                            
+                            $tambahanMenit = ($p->queue_number - 1) * 30;
+                            $time = date('H:i', strtotime("+$tambahanMenit minutes", $waktuMulai));
+                        }
+                    @endphp
+                    <tr class="patient-row" data-status="{{ $p->status }}">
+                        <td><span class="queue-badge">{{ $p->queue_number }}</span></td>
+                        <td><div class="patient-info"><h4>{{ $p->name }}</h4><p>{{ $p->gender ?? '-' }}, {{ $age }}y</p></div></td>
+                        <td>{{ $time }} WIB</td>
+                        <td><span class="badge {{ $statusClass }}">{{ $statusText }}</span></td>
+                        <td>
+                            @if($p->status == 'C' || $p->status == 'F')
+                                <a href="{{ url('/doctor/records') }}" class="btn {{ $btnClass }}" style="text-decoration:none;">{{ $btnLabel }}</a>
+                            @else
+                                <a href="{{ url('/doctor/new-entry') }}?appointment_id={{ $p->id_appointments }}" class="btn {{ $btnClass }}" style="text-decoration:none;">{{ $btnLabel }}</a>
+                            @endif
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-gray);">No patients found for today.</td></tr>
+                @endforelse
+            </tbody>
         </table>
         
         <div id="emptyState" class="empty-state" style="{{ $remainingCount > 0 ? 'display:none;' : '' }} padding:60px 24px; background:transparent; border:1px dashed var(--border);">

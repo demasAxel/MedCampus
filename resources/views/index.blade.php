@@ -45,10 +45,6 @@
             <a href="{{ url('/register') }}" class="btn btn-primary">Book Appointment</a>
             <a href="#services" class="btn btn-outline">Learn More</a>
           </div>
-          <div class="social-proof">
-            <div class="avatars"><div></div><div></div><div></div></div>
-            <span>Joined by over 5,000+ students this semester</span>
-          </div>
         </div>
         <div class="hero-image">
           <img src="{{ asset('img/gambar_klinik.png') }}" alt="Clinic Reception">
@@ -121,9 +117,11 @@
               </div>
             </div>
           </div>
-          <div class="location-map">
-            <img src="https://placehold.co/600x400/407a68/ffffff?text=Map+Illustration" alt="Campus Map Location">
+
+          <div class="map-container" style="border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.1); line-height: 0;">
+          <iframe src="https://maps.google.com/maps?q=PLK%20UNAIR%20Kampus%20C&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
+
         </div>
       </div>
     </section>
@@ -142,38 +140,22 @@
         <div class="footer-links">
           <h4>Quick Links</h4>
           <ul>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="javascript:void(0)" onclick="Toast.show('Medical Staff coming soon.', 'info')">Medical Staff</a></li>
-            <li><a href="javascript:void(0)" onclick="Toast.show('Doctor Schedule coming soon.', 'info')">Doctor Schedule</a></li>
-            <li><a href="{{ url('/login') }}">Patient Portal</a></li>
+            <li><a href="{{ url('/patient/booking') }}">Book Appointment</a></li>
+            <li><a href="{{ url('/login') }}">Doctor Schedule</a></li>
+            <li><a href="{{ url('/patient/history') }}">Patient Portal</a></li>
           </ul>
         </div>
         <div class="footer-links">
           <h4>Services</h4>
           <ul>
-            <li><a href="{{ url('/service-guide') }}">General Medicine</a></li>
-            <li><a href="{{ url('/service-guide') }}">Counseling Center</a></li>
-            <li><a href="{{ url('/service-guide') }}">Dental Clinic</a></li>
-            <li><a href="{{ url('/service-guide') }}">Emergency Care</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Support</h4>
-          <ul>
-            <li><a href="javascript:void(0)" onclick="Toast.show('FAQ coming soon.', 'info')">FAQ</a></li>
-            <li><a href="javascript:void(0)" onclick="Toast.show('Terms of Service is not available in the demo.', 'info')">Terms of Service</a></li>
-            <li><a href="javascript:void(0)" onclick="Toast.show('Privacy Policy is not available in the demo.', 'info')">Privacy Policy</a></li>
-            <li><a href="javascript:void(0)" onclick="Toast.show('Contact Us coming soon.', 'info')">Contact Us</a></li>
+            <li><a href="{{ url('/login') }}">General Medicine</a></li>
+            <li><a href="{{ url('/login') }}">Dental Clinic</a></li>
+            <li><a href="{{ url('/login') }}">Emergency Care</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <p>&copy; 2026 MedCampus University Health Service. All rights reserved.</p>
-        <div class="social-links">
-          <a href="javascript:void(0)" onclick="Toast.show('Twitter is not available in the demo.', 'info')">Twitter</a>
-          <a href="javascript:void(0)" onclick="Toast.show('Instagram is not available in the demo.', 'info')">Instagram</a>
-          <a href="javascript:void(0)" onclick="Toast.show('LinkedIn is not available in the demo.', 'info')">LinkedIn</a>
-        </div>
       </div>
     </div>
   </footer>

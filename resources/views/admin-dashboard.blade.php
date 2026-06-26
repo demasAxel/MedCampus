@@ -18,6 +18,34 @@
     .notif-item h5 { font-size:13px; margin-bottom:3px; }
     .notif-item p  { font-size:11px; color:var(--text-gray); }
     .bell-wrapper  { position:relative; }
+    body.dark-mode {
+      --white: #242938 !important;
+      --bg-gray: #1a1f2e !important;
+      --dark-navy: #f8fafc !important;
+      --text-gray: #94a3b8 !important;
+      --border: #2d3748 !important;
+      --light-green: #064e3b !important;
+    }
+    body.dark-mode .card,
+    body.dark-mode .table-container,
+    body.dark-mode .admin-schedule-header,
+    body.dark-mode .admin-schedule-day {
+      background: var(--white) !important;
+      border-color: var(--border) !important;
+    }
+    body.dark-mode th {
+      background: var(--bg-gray) !important;
+      border-color: var(--border) !important;
+      color: var(--text-gray) !important;
+    }
+    body.dark-mode td {
+      border-color: var(--border) !important;
+    }
+    body.dark-mode input, body.dark-mode select {
+      background-color: var(--bg-gray) !important;
+      color: var(--dark-navy) !important;
+      border-color: var(--border) !important;
+    }
   </style>
   <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 
@@ -85,7 +113,7 @@
 
         <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;">
           <div class="flex-between" style="margin-bottom:24px;">
-            <div style="width:40px;height:40px;background:#fff7ed;color:#ea580c;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <div style="width:40px;height:40px;background:var(--light-green);color:var(--primary-green);border-radius:8px;display:flex;align-items:center;justify-content:center;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg>
             </div>
             @if($lowStockMeds > 0)
@@ -153,7 +181,7 @@
           <div><h4 style="font-size:14px;">Manage Users</h4><p style="font-size:12px;color:var(--text-gray);">Add, edit or suspend accounts</p></div>
         </a>
         <a href="{{ url('/admin/inventory') }}" class="card" style="text-decoration:none;display:flex;align-items:center;gap:16px;padding:20px;transition:.2s;" onmouseover="this.style.borderColor='var(--primary-green)'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="width:40px;height:40px;background:#fff7ed;color:#ea580c;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <div style="width:40px;height:40px;background:var(--light-green);color:var(--primary-green);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg>
           </div>
           <div><h4 style="font-size:14px;">Medicine Inventory</h4><p style="font-size:12px;color:var(--text-gray);">Track and update stock levels</p></div>
