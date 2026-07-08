@@ -74,12 +74,16 @@
             <label class="admin-form-label">Category <span style="color:#ef4444;">*</span></label>
             <select id="add-category" name="category" class="admin-form-select" required>
               <option value="" disabled selected>Select Category</option>
-              <option value="Antibiotics">Antibiotics</option>
-              <option value="Analgesics">Analgesics</option>
-              <option value="Antidiabetics">Antidiabetics</option>
-              <option value="Vitamins">Vitamins</option>
-              <option value="Antihistamines">Antihistamines</option>
-              <option value="Antacids">Antacids</option>
+              <option value="Antibiotics">Antibiotics (Melawan infeksi bakteri)</option>
+              <option value="Analgesics">Analgesics (Pereda nyeri)</option>
+              <option value="Antidiabetics">Antidiabetics (Pengatur gula darah)</option>
+              <option value="Vitamins">Vitamins (Suplemen nutrisi)</option>
+              <option value="Antihistamines">Antihistamines (Anti-alergi)</option>
+              <option value="Antacids">Antacids (Pereda asam lambung)</option>
+              <option value="Obat Umum">Obat Umum (Obat dasar/P3K)</option>
+              <option value="Anti-inflammatory">Anti-inflammatory (Obat anti-radang)</option>
+              <option value="Cardiovascular">Cardiovascular (Obat jantung & darah tinggi)</option>
+              <option value="Antifungal">Antifungal (Obat anti-jamur)</option>
             </select>
           </div>
           <div class="admin-form-group">
@@ -102,6 +106,11 @@
               <option value="Bottles">Bottles</option>
               <option value="Boxes">Boxes</option>
               <option value="Vials">Vials</option>
+              <option value="Kaplet">Kaplet</option>
+              <option value="Tablet">Tablet</option>
+              <option value="Ampoules">Ampoules</option>
+              <option value="Sachets">Sachets</option>
+              <option value="Tubes">Tubes</option>
             </select>
           </div>
           <div class="admin-form-group">
