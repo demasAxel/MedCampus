@@ -34,27 +34,36 @@
       @endif
 
       <form action="{{ url('/register') }}" method="POST">
-  @csrf
-  
-  <div class="form-group">
-    <label for="user_name">Full Name</label>
-    <input type="text" id="user_name" name="user_name" placeholder="e.g. Andy Jackson" required>
-  </div>
+        @csrf
+        
+        <div class="form-group">
+          <label for="user_name">Full Name</label>
+          <input type="text" id="user_name" name="user_name" placeholder="e.g. Andy Jackson" required>
+        </div>
 
-  <div class="form-group">
-    <label for="reg_email">University Email</label>
-    <input type="email" id="reg_email" name="user_email" placeholder="your@email.com" required autocomplete="username">
-  </div>
+        <div class="form-group">
+          <label for="reg_email">University Email</label>
+          <input type="email" id="reg_email" name="user_email" placeholder="your@email.com" required autocomplete="username">
+        </div>
 
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" placeholder="Create a strong password" required autocomplete="new-password">
-  </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Create a strong password" required autocomplete="new-password">
+        </div>
 
-  <div class="form-group">
-    <label for="password_confirmation">Confirm Password</label>
-    <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Type your password again" required autocomplete="new-password">
-  </div>
+        <div class="form-group">
+          <label for="password_confirmation">Confirm Password</label>
+          <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Type your password again" required autocomplete="new-password">
+        </div>
+
+        <label class="checkbox-container">
+          <input type="checkbox" name="terms">
+          <div class="checkmark"><svg viewBox="0 0 12 12"><polyline points="3 6 5 8 9 4"></polyline></svg></div>
+          <span>I agree to the <a href="javascript:void(0)" onclick="openPolicyModal('termsModal')">Terms of Service</a> and <a href="javascript:void(0)" onclick="openPolicyModal('privacyModal')">Privacy Policy</a>.</span>
+        </label>
+
+        <button type="submit" class="btn-submit">Create Account</button>
+      </form>
 
       <p class="auth-footer-text" style="margin-top:16px;">
         Are you a doctor or staff? Contact your admin to get access.
