@@ -16,19 +16,16 @@ class AuthController extends Controller
     public function registerProcess(Request $request)
     {
         $request->validate([
-            'firstname' => 'required',
-            'lastname'  => 'required',
-            'uni_id'    => 'required|digits:9|unique:users,id_user',
-            'email'     => 'required|email|unique:users,user_email',
-            'password'  => 'required|min:6',
+            'user_name'  => 'required|string',
+            'uni_id'     => 'required|digits:9|unique:users,id_user',
+            'user_email' => 'required|email|unique:users,user_email',
+            'password'   => 'required|min:6|confirmed',
         ]);
-
-        $fullName = $request->firstname . ' ' . $request->lastname;
 
         \DB::table('users')->insert([
             'id_user'    => $request->uni_id,  
-            'user_name'  => $fullName,
-            'user_email' => $request->email,
+            'user_name'  => $request->user_name,
+            'user_email' => $request->user_email,
             'password'   => \Hash::make($request->password), 
             'id_role'    => '1',               
             'user_phone' => '-', 

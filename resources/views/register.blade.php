@@ -42,6 +42,11 @@
         </div>
 
         <div class="form-group">
+          <label for="id_user">University ID</label>
+          <input type="text" id="id_user" name="id_user" placeholder="e.g. 187241000" required>
+        </div>
+
+        <div class="form-group">
           <label for="reg_email">University Email</label>
           <input type="email" id="reg_email" name="user_email" placeholder="your@email.com" required autocomplete="username">
         </div>
