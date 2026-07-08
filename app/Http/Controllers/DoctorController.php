@@ -97,6 +97,10 @@ class DoctorController extends Controller
             ->orderBy('appointments.queue_number', 'asc')
             ->get();
 
+        foreach ($patients as $p) {
+            $p->start_time = $this->getShiftStartTime($p->shift);
+        }
+
         return view('doctor-patients', compact('patients'));
     }
 

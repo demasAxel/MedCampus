@@ -115,25 +115,9 @@
                         $btnClass = ($p->status == 'C' || $p->status == 'F') ? 'btn-outline' : 'btn-primary';
                         $age = $p->date_of_birth ? \Carbon\Carbon::parse($p->date_of_birth)->age : '?';
                         
-                        $time = '00:00';
-
-                        if (!empty($p->shift)) {
-                            $shiftStr = strtolower($p->shift);
-                            
-                            if (str_contains($shiftStr, 'morning')) {
-                                $waktuMulai = strtotime('08:00');
-                            } elseif (str_contains($shiftStr, 'afternoon')) {
-                                $waktuMulai = strtotime('13:00');
-                            } elseif (str_contains($shiftStr, 'evening')) {
-                                $waktuMulai = strtotime('18:00');
-                            } else {
-                                $shiftParts = explode('-', $p->shift);
-                                $waktuMulai = strtotime(trim($shiftParts[0]));
-                            }
-                            
-                            $tambahanMenit = ($p->queue_number - 1) * 30;
-                            $time = date('H:i', strtotime("+$tambahanMenit minutes", $waktuMulai));
-                        }
+                        $waktuMulai = strtotime($p->start_time); // Ambil dari Controller
+                        $tambahanMenit = ($p->queue_number - 1) * 30;
+                        $time = date('H:i', strtotime("+$tambahanMenit minutes", $waktuMulai));
                     @endphp
                     <tr class="patient-row" data-status="{{ $p->status }}">
                         <td><span class="queue-badge">{{ $p->queue_number }}</span></td>
@@ -142,9 +126,17 @@
                         <td><span class="badge {{ $statusClass }}">{{ $statusText }}</span></td>
                         <td>
                             @if($p->status == 'C' || $p->status == 'F')
-                                <a href="{{ url('/doctor/records') }}" class="btn {{ $btnClass }}" style="text-decoration:none;">{{ $btnLabel }}</a>
+                                <a href="{{ url('/doctor/records') }}?appointment_id={{ $p->id_appointments }}" 
+                                  class="btn {{ $btnClass }}" 
+                                  style="text-decoration:none;">
+                                  {{ $btnLabel }}
+                                </a>
                             @else
-                                <a href="{{ url('/doctor/new-entry') }}?appointment_id={{ $p->id_appointments }}" class="btn {{ $btnClass }}" style="text-decoration:none;">{{ $btnLabel }}</a>
+                                <a href="{{ url('/doctor/new-entry') }}?appointment_id={{ $p->id_appointments }}" 
+                                  class="btn {{ $btnClass }}" 
+                                  style="text-decoration:none;">
+                                  {{ $btnLabel }}
+                                </a>
                             @endif
                         </td>
                     </tr>
