@@ -22,6 +22,17 @@
         <a href="{{ url('/register') }}" class="active">Register</a>
       </div>
 
+      @if ($errors->any())
+          <div style="background-color: #ffcccc; color: red; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+              <strong>Can't register account, Something is wrong:</strong>
+              <ul>
+                  @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                  @endforeach
+              </ul>
+          </div>
+      @endif
+
       <form action="{{ url('/register') }}" method="POST">
         @csrf
         <div class="form-row">
