@@ -200,7 +200,6 @@
   <script src="{{ asset('js/doctor.js') }}"></script>
   
   <script>
-    // 🌟 PERBAIKAN 2: Gunakan json_encode agar anti-crash kalau ada nama obat yang aneh
     const rawMeds = {!! json_encode($medicines) !!};
     const DB_MEDICINES = rawMeds.map(m => ({
         id: m.id_med,
@@ -216,7 +215,6 @@
     const originLink = document.querySelector(`.nav-links a[href="${entryOrigin}"]`);
     if (originLink) originLink.classList.add('active');
 
-    // Script Tambah Baris Obat
     document.querySelector('[data-action="add-med"]').addEventListener('click', () => {
       const row = document.createElement('div');
       row.className = 'prescription-row';
@@ -237,14 +235,12 @@
       document.getElementById('prescriptionRows').appendChild(row);
     });
 
-    // Script Discard
     document.querySelector('[data-action="discard"]').addEventListener('click', () => {
       if (confirm('Are you sure you want to discard this medical entry?')) {
           window.location.href = entryOrigin;
       }
     });
 
-    // Animasi Loading Submit (Mencegah Double Click)
     document.getElementById('newEntryForm').addEventListener('submit', function() {
         const btn = document.getElementById('btnSubmitForm');
         btn.textContent = 'Saving Record...';

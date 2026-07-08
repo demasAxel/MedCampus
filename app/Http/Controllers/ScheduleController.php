@@ -20,8 +20,11 @@ class ScheduleController extends Controller
 
     public function create()
     {
-        // Hanya mengambil user dengan role dokter (id_role = 2)
-        $doctors = DB::table('users')->where('id_role', 2)->get();
+        $doctors = DB::table('users')
+            ->where('id_role', 2)
+            ->where('user_status', 'active')
+            ->get();
+            
         return view('admin-schedule-add', compact('doctors'));
     }
 
@@ -46,7 +49,11 @@ class ScheduleController extends Controller
     public function edit($id)
     {
         $schedule = DB::table('doctor_schedules')->where('id_schedule', $id)->first();
-        $doctors = DB::table('users')->where('id_role', 2)->get();
+        
+        $doctors = DB::table('users')
+            ->where('id_role', 2)
+            ->where('user_status', 'active')
+            ->get();
         
         return view('admin-schedule-edit', compact('schedule', 'doctors'));
     }

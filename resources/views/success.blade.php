@@ -54,8 +54,23 @@
     </div>
 
     <div style="margin-top:32px;display:flex;gap:16px;justify-content:center;">
-      <a href="{{ url('/patient/ticket') }}" class="btn btn-primary">🎟 View Digital Ticket</a>
-      <a href="{{ url('/patient/dashboard') }}" class="btn btn-outline" style="background:white;">🏠 Return to Home</a>
+      <a href="{{ url('/patient/ticket') }}" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+          <path d="M13 5v2"></path>
+          <path d="M13 17v2"></path>
+          <path d="M13 11v2"></path>
+        </svg>
+        View Digital Ticket
+      </a>
+      
+      <a href="{{ url('/patient/dashboard') }}" class="btn btn-outline" style="background:white; display:inline-flex; align-items:center; gap:8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        Return to Home
+      </a>
     </div>
   </main>
 
@@ -77,7 +92,6 @@
       const session = AppData.getSession();
       if (!q || !q.appointmentId) return;
 
-      // Avoid duplicate entries
       const visits = AppData.getVisits ? AppData.getVisits() : [];
       const already = visits.find(v => v.id === q.appointmentId);
       if (already) return;
@@ -106,7 +120,6 @@
   </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    // Generate real QR code
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         const el = document.getElementById('qr-canvas');

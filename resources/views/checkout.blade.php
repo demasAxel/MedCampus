@@ -77,7 +77,6 @@
     <p style="color:var(--text-gray);margin-bottom:40px;">Review your appointment details and complete the payment to secure your slot.</p>
 
     <div style="display:grid;grid-template-columns:2fr 1fr;gap:40px;">
-      <!-- KIRI: INFORMASI -->
       <div>
         <h3 style="margin-bottom:16px;">Appointment Summary</h3>
         <div class="card card-shadow grid-2">
@@ -118,7 +117,6 @@
         </div>
       </div>
 
-      <!-- KANAN: BILL & FORM RAHASIA -->
       <div>
         <form action="{{ url('/patient/store-booking') }}" method="POST" class="card card-shadow" id="checkoutForm">
           @csrf
@@ -181,21 +179,14 @@
   </style>
 
   <script>
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault(); 
-        
-        const form = this;
+    document.getElementById('checkoutForm').addEventListener('submit', function() {
         const btn = document.getElementById('btnPay');
-
-        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-animation"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="4.93" x2="19.07" y2="7.76"></line></svg> Processing Payment...';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-animation"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="4.93" x2="19.07" y2="7.76"></line></svg> Processing...';
         btn.style.opacity = '0.7';
         btn.style.cursor = 'not-allowed';
         btn.style.pointerEvents = 'none';
-
-        setTimeout(() => {
-            form.submit();
-        }, 2500);
     });
   </script>
+
 </body>
 </html>

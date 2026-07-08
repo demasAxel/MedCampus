@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentMail;
+use App\Mail\CancellationMail;
+use App\Mail\PaymentMail;
 
 class PatientController extends Controller
 {
@@ -26,6 +30,7 @@ class PatientController extends Controller
             ->whereIn('appointments.status', ['W', 'I'])
             ->whereDate('appointments.appointment_date', '>=', $today)
             ->orderBy('appointments.appointment_date', 'asc')
+            ->orderBy('appointments.booking_time', 'asc')
             ->first();
 
         $estimatedTime = '—';
@@ -77,6 +82,7 @@ class PatientController extends Controller
             ->whereIn('appointments.status', ['W', 'I'])
             ->whereDate('appointments.appointment_date', '>=', $today)
             ->orderBy('appointments.appointment_date', 'asc')
+            ->orderBy('appointments.booking_time', 'asc')
             ->first();
 
         if (!$activeQueue) {
@@ -107,6 +113,7 @@ class PatientController extends Controller
             ->whereIn('appointments.status', ['W', 'I'])
             ->whereDate('appointments.appointment_date', '>=', $today)
             ->orderBy('appointments.appointment_date', 'asc')
+            ->orderBy('appointments.booking_time', 'asc')
             ->first();
 
         if (!$activeQueue) {
@@ -247,42 +254,123 @@ class PatientController extends Controller
     public function storeBooking(Request $request)
     {
         $userId = Auth::user()->id_user;
-        $dateRaw = $request->input('date_raw');
-        $timeSlot = $request->input('booking_time'); // Kolom baru kita
-        $idSchedule = $request->input('id_schedule'); 
-
-        $lastQueue = DB::table('appointments')
-            ->where('id_schedule', $idSchedule)
-            ->whereDate('appointment_date', $dateRaw)
-            ->max('queue_number');
+        $appointmentId = 'MC-' . date('Ymd') . '-' . rand(1000, 9999);
         
-        $newQueue = $lastQueue ? $lastQueue + 1 : 1;
-        $appointmentId = 'AP-' . rand(100000, 999999);
+        $idSchedule = $request->id_schedule ?? $request->input('id_schedule');
+        $dateRaw = $request->date_raw ?? $request->input('date_raw');
+        $timeSlot = $request->booking_time ?? $request->input('booking_time');
+        $doctorId = $request->doctor_id ?? $request->input('doctor_id');
 
         DB::table('appointments')->insert([
             'id_appointments'  => $appointmentId,
             'id_user'          => $userId,
             'id_schedule'      => $idSchedule,
             'appointment_date' => $dateRaw,
-            'booking_time'     => $timeSlot, 
-            'queue_number'     => $newQueue,
+            'booking_time'     => $timeSlot,
+            'queue_number'     => 0,
             'status'           => 'W',
             'created_at'       => now(),
-            'updated_at'       => now()
+            'updated_at'       => now(),
         ]);
 
-        return redirect('/patient/dashboard');
+        $allDayAppointments = DB::table('appointments')
+            ->where('id_schedule', $idSchedule)
+            ->whereDate('appointment_date', $dateRaw)
+            ->whereIn('status', ['W', 'I'])
+            ->orderBy('booking_time', 'asc')
+            ->get();
+
+        $currentQueue = 1;
+        $assignedQueue = 1;
+        
+        foreach ($allDayAppointments as $app) {
+            DB::table('appointments')
+                ->where('id_appointments', $app->id_appointments)
+                ->update(['queue_number' => $currentQueue]);
+            
+            if ($app->id_appointments == $appointmentId) {
+                $assignedQueue = $currentQueue;
+            }
+            $currentQueue++;
+        }
+
+        $transactionId = 'TRX-' . time() . '-' . rand(100, 999);
+        $amount = 165000;
+
+        DB::table('transaksi')->insert([
+            'id_transaksi'    => $transactionId,
+            'id_appointments' => $appointmentId,
+            'id_user'         => $userId,
+            'total_amount'    => $amount,
+            'status'          => 'paid', 
+            'created_at'      => now(),
+            'updated_at'      => now(),
+        ]);
+
+        DB::table('detail_transaksi')->insert([
+            'id_transaksi' => $transactionId,
+            'item_name'    => 'Biaya Konsultasi Klinik',
+            'amount'       => $amount,
+            'created_at'   => now(),
+            'updated_at'   => now(),
+        ]);
+
+        $patientName = Auth::user()->user_name;
+        $doctorName = DB::table('users')->where('id_user', $doctorId)->value('user_name');
+
+        $bookingData = [
+            'patient_name'  => $patientName,
+            'doctor_name'   => $doctorName,
+            'schedule_time' => $dateRaw . ' pukul ' . $timeSlot,
+            'queue_number'  => $assignedQueue,
+        ];
+
+        $paymentData = [
+            'patient_name'   => $patientName,
+            'transaction_id' => $transactionId,
+            'amount'         => $amount,
+        ];
+
+        Mail::to(Auth::user()->user_email)->send(new AppointmentMail($bookingData));
+        Mail::to(Auth::user()->user_email)->send(new PaymentMail($paymentData, 'success'));
+
+        return redirect('/patient/success');
     }
 
     public function cancelAppointment(Request $request)
     {
-        $userId = Auth::user()->id_user;
-        $appointmentId = $request->input('appointment_id');
+        $appointmentId = $request->appointment_id;
+        
+        DB::table('appointments')->where('id_appointments', $appointmentId)->update([
+            'status' => 'C',
+            'updated_at' => now(),
+        ]);
 
-        DB::table('appointments')
-            ->where('id_appointments', $appointmentId)
-            ->where('id_user', $userId)
-            ->update(['status' => 'C']);
+        $transaction = DB::table('transaksi')->where('id_appointments', $appointmentId)->first();
+        $refundAmount = 0;
+        
+        if ($transaction) {
+            if ($transaction->status == 'paid') {
+                DB::table('transaksi')->where('id_appointments', $appointmentId)->update([
+                    'status' => 'refunded',
+                    'updated_at' => now(),
+                ]);
+                $refundAmount = $transaction->total_amount;
+            } elseif ($transaction->status == 'pending') {
+                DB::table('transaksi')->where('id_appointments', $appointmentId)->update([
+                    'status' => 'cancelled',
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
+        $cancellationData = [
+            'patient_name'   => Auth::user()->user_name,
+            'appointment_id' => $appointmentId,
+            'refund_amount'  => $refundAmount,
+        ];
+
+        Mail::to(Auth::user()->user_email)->send(new CancellationMail($cancellationData));
 
         return redirect('/patient/dashboard');
     }
@@ -292,7 +380,6 @@ class PatientController extends Controller
         $doctorId = $request->query('doctor_id');
         $date = $request->query('date');
 
-        // Tarik jadwal shift dokter dari database
         $schedules = DB::table('doctor_schedules')
             ->where('id_user', $doctorId)
             ->whereDate('schedule_date', $date)
@@ -304,7 +391,6 @@ class PatientController extends Controller
             $start = '08:00'; $end = '14:00';
             $sName = strtolower($schedule->shift);
             
-            // SINKRONISASI DENGAN JAM ADMIN
             if (str_contains($sName, 'morning')) { $start = '08:00'; $end = '14:00'; }
             elseif (str_contains($sName, 'afternoon')) { $start = '14:00'; $end = '20:00'; }
             elseif (str_contains($sName, 'evening')) { $start = '20:00'; $end = '02:00'; }
@@ -330,7 +416,6 @@ class PatientController extends Controller
             $startTime = strtotime($start);
             $endTime = strtotime($end);
 
-            // PENYELAMAT BUG TENGAH MALAM (Shift Evening)
             if ($endTime <= $startTime) {
                 $endTime = strtotime('+1 day', $endTime);
             }

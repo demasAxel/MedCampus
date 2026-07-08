@@ -20,7 +20,7 @@
     .view-tabs { display: flex; background: var(--bg-gray); border-radius: 8px; padding: 4px; transition: 0.3s; }
     .view-tabs button { background: transparent; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 600; color: var(--text-gray); cursor: pointer; font-size: 13px; transition: 0.2s; }
     .view-tabs button.active { background: var(--white); color: var(--dark-navy); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .sch-grid { display: grid; grid-template-columns: 80px repeat(7, 1fr); }
+    .sch-grid { display: grid; grid-template-columns: 110px repeat(7, 1fr); }
     .sch-header-cell { padding: 16px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); transition: 0.3s; }
     .sch-header-cell:last-child { border-right: none; }
     .sch-header-cell .day-name { font-size: 11px; font-weight: 700; color: var(--text-gray); text-transform: uppercase; margin-bottom: 6px; display: block; }
@@ -194,7 +194,7 @@
         const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
         let weekDates = [];
 
-        let headerHtml = `<div class="time-col-header">TIME</div>`;
+        let headerHtml = `<div class="time-col-header">SHIFT</div>`;
         for (let i = 0; i < 7; i++) {
             let colDate = new Date(currentMonday);
             colDate.setDate(colDate.getDate() + i);
@@ -220,8 +220,8 @@
         
         let uniqueShifts = [...new Set(currentWeekSchedules.map(s => s.shift))];
         uniqueShifts.sort((a, b) => {
-            let jamA = a.toLowerCase().includes('morning') ? 8 : (a.toLowerCase().includes('afternoon') ? 13 : (a.toLowerCase().includes('evening') ? 18 : parseInt(a.split(':')[0])));
-            let jamB = b.toLowerCase().includes('morning') ? 8 : (b.toLowerCase().includes('afternoon') ? 13 : (b.toLowerCase().includes('evening') ? 18 : parseInt(b.split(':')[0])));
+            let jamA = a.toLowerCase().includes('morning') ? 1 : (a.toLowerCase().includes('afternoon') ? 2 : (a.toLowerCase().includes('evening') ? 3 : 4));
+            let jamB = b.toLowerCase().includes('morning') ? 1 : (b.toLowerCase().includes('afternoon') ? 2 : (b.toLowerCase().includes('evening') ? 3 : 4));
             return jamA - jamB;
         });
 
@@ -236,37 +236,22 @@
             return;
         }
 
-        let hasLunchBreak = false;
-        const lunchSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path></svg>`;
+        const shiftRanges = {
+            'morning': '08:00 – 14:00',
+            'afternoon': '14:00 – 20:00',
+            'evening': '20:00 – 02:00'
+        };
 
         uniqueShifts.forEach(shiftTime => {
-            let h = 0, mm = '00', ampm = 'AM', timeLabel = '';
+            let shiftKey = shiftTime.toLowerCase();
             
-            if (shiftTime.toLowerCase().includes('morning')) {
-                h = 8; ampm = 'AM'; timeLabel = '08:00';
-            } else if (shiftTime.toLowerCase().includes('afternoon')) {
-                h = 13; ampm = 'PM'; timeLabel = '01:00';
-                if (!hasLunchBreak) { grid.innerHTML += `<div class="lunch-break">${lunchSvg} LUNCH BREAK</div>`; hasLunchBreak = true; }
-            } else if (shiftTime.toLowerCase().includes('evening')) {
-                h = 18; ampm = 'PM'; timeLabel = '06:00';
-                if (!hasLunchBreak) { grid.innerHTML += `<div class="lunch-break">${lunchSvg} LUNCH BREAK</div>`; hasLunchBreak = true; }
-            } else {
-                let startTime = shiftTime.split('-')[0].trim();
-                let timeParts = startTime.split(':');
-                h = parseInt(timeParts[0]);
-                mm = timeParts[1] || '00';
-                ampm = h >= 12 ? 'PM' : 'AM';
-                
-                if (ampm === 'PM' && !hasLunchBreak && h !== 18) {
-                    grid.innerHTML += `<div class="lunch-break">${lunchSvg} LUNCH BREAK</div>`;
-                    hasLunchBreak = true;
-                }
-                let displayHour = h % 12;
-                if (displayHour === 0) displayHour = 12;
-                timeLabel = `${displayHour < 10 ? '0'+displayHour : displayHour}:${mm}`;
-            }
+            let displayTitle = shiftTime.toUpperCase();
+            let displayRange = shiftRanges[shiftKey] || '';
 
-            let rowHtml = `<div class="sch-time">${timeLabel}<br><span>${ampm}</span></div>`;
+            let rowHtml = `<div class="sch-time" style="line-height: 1.5; justify-content: center;">
+                <span style="font-size: 13px; font-weight: 800; color: var(--dark-navy); letter-spacing: 0.5px;">${displayTitle}</span><br>
+                <span style="font-size: 10px; font-weight: 700; color: var(--text-gray);">${displayRange}</span>
+            </div>`;
 
             for (let i = 0; i < 7; i++) {
                 let cellData = currentWeekSchedules.find(s => s.date === weekDates[i] && s.shift === shiftTime);
@@ -289,8 +274,8 @@
             selectedDate.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', year:'numeric'}) + (isActuallyToday ? ' (Today)' : '');
 
         const todaySchedules = DB_SCHEDULES.filter(s => s.date === dateStr).sort((a,b) => {
-            let jamA = a.shift.toLowerCase().includes('morning') ? 8 : (a.shift.toLowerCase().includes('afternoon') ? 13 : (a.shift.toLowerCase().includes('evening') ? 18 : parseInt(a.shift.split(':')[0])));
-            let jamB = b.shift.toLowerCase().includes('morning') ? 8 : (b.shift.toLowerCase().includes('afternoon') ? 13 : (b.shift.toLowerCase().includes('evening') ? 18 : parseInt(b.shift.split(':')[0])));
+            let jamA = a.shift.toLowerCase().includes('morning') ? 1 : (a.shift.toLowerCase().includes('afternoon') ? 2 : 3);
+            let jamB = b.shift.toLowerCase().includes('morning') ? 1 : (b.shift.toLowerCase().includes('afternoon') ? 2 : 3);
             return jamA - jamB;
         });
 
@@ -305,13 +290,25 @@
             return;
         }
 
+        const shiftRanges = {
+            'morning': '08:00 – 14:00',
+            'afternoon': '14:00 – 20:00',
+            'evening': '20:00 – 02:00'
+        };
+
         let html = `<div style="display:flex; flex-direction:column; gap:16px; max-width: 800px; margin: 0 auto;">`;
         todaySchedules.forEach(s => {
+            let shiftKey = s.shift.toLowerCase();
+            let timeRange = shiftRanges[shiftKey] || '';
+
             html += `
                 <div class="today-shift-card" style="display:flex; align-items:center; background:#f8fafc; border:1px solid var(--border); border-left:4px solid var(--primary-green); border-radius:10px; padding:24px;">
-                    <div style="width:180px; font-weight:800; color:var(--dark-navy); font-size:16px; display:flex; align-items:center; gap:8px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-green);"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        ${s.shift}
+                    <div style="width:180px; font-weight:800; color:var(--dark-navy); font-size:16px; display:flex; flex-direction:column; gap:4px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-green);"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            ${s.shift.toUpperCase()}
+                        </div>
+                        <span style="font-size:11px; color:var(--text-gray); padding-left:26px;">${timeRange}</span>
                     </div>
                     <div style="flex:1;">
                         <h3 style="margin:0 0 6px 0; color:var(--dark-navy); font-size:18px;">${s.room}</h3>

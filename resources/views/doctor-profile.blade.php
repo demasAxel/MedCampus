@@ -233,33 +233,30 @@
           </form>
         </div>
       </div> <div id="tab-preferences" class="tab-panel" style="display:none;">
-
-        <div class="pref-section">
+        <div class="pref-section" style="margin-bottom: 32px;">
           <h3>
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9"></path></svg>
-            General Preferences
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="margin-right:8px; color:var(--primary-green);"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            Notification Settings
           </h3>
-          <div class="pref-select-row" style="margin-bottom:20px;">
-            <div class="form-field" style="margin-bottom:0;">
-              <label for="prefLang">Language</label>
-              <select id="prefLang">
-                <option value="en">English</option>
-                <option value="id">Bahasa Indonesia</option>
-              </select>
+          <p style="font-size:13px;color:var(--text-gray);margin-bottom:16px;">Manage how we contact you for patient updates and schedules.</p>
+          
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--border);">
+              <div>
+                <h4 style="font-size:14px; margin-bottom:4px; color:var(--dark-navy);">Email Notifications</h4>
+                <p style="font-size:12px; color:var(--text-gray); margin:0;">Receive daily schedules and medical record summaries via email.</p>
+              </div>
+              <label class="toggle-switch"><input type="checkbox" id="toggleEmail" checked><span class="toggle-slider"></span></label>
             </div>
-            <div class="form-field" style="margin-bottom:0;">
-              <label for="prefTimezone">Timezone</label>
-              <select id="prefTimezone">
-                <option value="wib">WIB (UTC+7)</option>
-                <option value="wita">WITA (UTC+8)</option>
-                <option value="wit">WIT (UTC+9)</option>
-              </select>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h4 style="font-size:14px; margin-bottom:4px; color:var(--dark-navy);">SMS Notifications</h4>
+                <p style="font-size:12px; color:var(--text-gray); margin:0;">Receive urgent alerts for immediate appointments via SMS.</p>
+              </div>
+              <label class="toggle-switch"><input type="checkbox" id="toggleSms"><span class="toggle-slider"></span></label>
             </div>
           </div>
-          <p class="system-note">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-            Schedules and patient records will align with this timezone.
-          </p>
         </div>
 
         <div class="pref-section">
@@ -286,33 +283,6 @@
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
             System default is currently active.
           </p>
-        </div>
-
-        <div class="pref-section">
-          <h3>
-            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-            Notification Settings
-          </h3>
-          <div class="notif-toggle-row">
-            <div class="notif-toggle-info">
-              <h5>Email Notifications</h5>
-              <p>Receive daily summaries, critical patient updates, and system alerts via email.</p>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="toggleEmail" checked>
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <div class="notif-toggle-row">
-            <div class="notif-toggle-info">
-              <h5>SMS Notifications</h5>
-              <p>Get immediate text messages for emergency codes and urgent scheduling changes.</p>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="toggleSms">
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
         </div>
 
         <div style="background:var(--white);border-radius:16px;border:1px solid var(--border);padding:24px 32px;display:flex;justify-content:space-between;align-items:center;">
@@ -514,7 +484,6 @@
       });
     });
 
-    // 2. FUNGSI LOAD DATA DARI MEMORI (LOCAL STORAGE)
     function loadPreferences() {
       const isDark = localStorage.getItem('mc_dark_mode') === '1';
       const lightCard = document.getElementById('themeLightCard');

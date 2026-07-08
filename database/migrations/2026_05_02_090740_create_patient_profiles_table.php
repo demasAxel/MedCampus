@@ -16,12 +16,11 @@ return new class extends Migration
             $table->char('id_user', 9);
             $table->string('nim_nip', 50);
             $table->date('date_of_birth');
-            $table->char('gender', 1); // Cukup 1 huruf: 'M' atau 'F'
+            $table->char('gender', 1);
             $table->text('address');
             $table->string('blood_type', 5);
             $table->timestamps();
 
-            // Relasi ke tabel users
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }

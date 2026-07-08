@@ -165,14 +165,10 @@
   </div>
 
   <script>
-    // Script ini cuma buat ngatur efek klik di kartu status
     document.querySelectorAll('.status-option').forEach(opt => {
       opt.addEventListener('click', function() {
-        // Hapus warna hijau dari semua kartu
         document.querySelectorAll('.status-option').forEach(o => o.classList.remove('selected'));
-        // Kasih warna hijau ke kartu yang diklik
         this.classList.add('selected');
-        // Masukin value statusnya ke input tersembunyi biar ke-kirim ke Laravel
         document.getElementById('inputStatus').value = this.dataset.status;
       });
     });
@@ -187,12 +183,10 @@
             if (!editRoleInput || !editDeptInput) return;
 
             if (editRoleInput.value === 'Doctor') {
-                // JIKA DOKTER: Buka gembok dan warnai putih
                 editDeptInput.disabled = false;
                 editDeptInput.style.backgroundColor = '#ffffff'; 
                 editDeptInput.style.cursor = 'pointer';
             } else {
-                // JIKA STUDENT/ADMIN: Kunci gembok, ganti warna abu, dan paksa pilih 'None'
                 editDeptInput.value = 'None (Student / Admin)'; 
                 editDeptInput.disabled = true;  
                 editDeptInput.style.backgroundColor = 'var(--bg-gray, #f8fafc)'; 
@@ -200,10 +194,8 @@
             }
         }
 
-        // 1. Jalankan saat halaman load untuk menyesuaikan status awal dari database
         toggleEditDepartment();
 
-        // 2. Jalankan tiap kali ada perubahan di dropdown Role
         editRoleInput.addEventListener('change', toggleEditDepartment);
     });
   </script>

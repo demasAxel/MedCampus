@@ -123,7 +123,6 @@
             menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
         }
         
-        // Auto-close jika klik sembarang tempat di layar
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('mcDropdownMenu');
             const toggle = document.getElementById('mcProfileToggle');
@@ -278,31 +277,32 @@
         </div>
 
         <div id="tab-preferences" class="tab-panel" style="display:none;">
-
-          <div class="pref-section">
+          <div class="pref-section" style="margin-bottom: 32px;">
             <h3>
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9"></path></svg>
-              General Preferences
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="margin-right:8px; color:var(--primary-green);"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              Notification Settings
             </h3>
-            <div class="pref-select-row" style="margin-bottom:16px;">
-              <div class="form-field" style="margin-bottom:0;">
-                <label for="prefLang">Language</label>
-                <select id="prefLang">
-                  <option value="en">English</option>
-                  <option value="id">Bahasa Indonesia</option>
-                </select>
+            <p style="font-size:13px;color:var(--text-gray);margin-bottom:16px;">Manage how we contact you for appointments and clinical updates.</p>
+            
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--border);">
+                <div>
+                  <h4 style="font-size:14px; margin-bottom:4px; color:var(--dark-navy);">Email Notifications</h4>
+                  <p style="font-size:12px; color:var(--text-gray); margin:0;">Receive appointment reminders and health tips via email.</p>
+                </div>
+                <label class="toggle-switch"><input type="checkbox" id="toggleEmail" checked><span class="toggle-slider"></span></label>
               </div>
-              <div class="form-field" style="margin-bottom:0;">
-                <label for="prefTimezone">Timezone</label>
-                <select id="prefTimezone">
-                  <option value="wib">WIB (UTC+7)</option>
-                  <option value="wita">WITA (UTC+8)</option>
-                  <option value="wit">WIT (UTC+9)</option>
-                </select>
+              
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <h4 style="font-size:14px; margin-bottom:4px; color:var(--dark-navy);">SMS Notifications</h4>
+                  <p style="font-size:12px; color:var(--text-gray); margin:0;">Receive urgent alerts and queue updates via SMS.</p>
+                </div>
+                <label class="toggle-switch"><input type="checkbox" id="toggleSms"><span class="toggle-slider"></span></label>
               </div>
             </div>
           </div>
-
+        
           <div class="pref-section">
             <h3>
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -327,33 +327,6 @@
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
               System default is currently active.
             </p>
-          </div>
-
-          <div class="pref-section">
-            <h3>
-              <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-              Notification Settings
-            </h3>
-            <div class="notif-toggle-row">
-              <div class="notif-toggle-info">
-                <h5>Email Notifications</h5>
-                <p>Receive appointment reminders and health updates via email.</p>
-              </div>
-              <label class="toggle-switch">
-                <input type="checkbox" id="toggleEmail" checked>
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-            <div class="notif-toggle-row">
-              <div class="notif-toggle-info">
-                <h5>SMS Notifications</h5>
-                <p>Get text messages for urgent appointment updates and queue alerts.</p>
-              </div>
-              <label class="toggle-switch">
-                <input type="checkbox" id="toggleSms">
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
           </div>
 
           <div style="background:var(--white);border-radius:14px;border:1px solid var(--border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
@@ -432,9 +405,6 @@
     const urlTab = new URLSearchParams(location.search).get('tab');
     if (urlTab) switchTab(urlTab);
 
-    // =====================================
-    // 2. PASSWORD LOGIC
-    // =====================================
     document.getElementById('btnUpdatePw').addEventListener('click', () => {
       const cur  = document.getElementById('secCurrentPw').value;
       const nw   = document.getElementById('secNewPw').value;
@@ -451,18 +421,12 @@
       ['secCurrentPw','secNewPw','secConfirmPw'].forEach(id => document.getElementById(id).value = '');
     });
 
-    // =====================================
-    // 3. SIGN OUT ALL DEVICES
-    // =====================================
     document.getElementById('btnSignOutAll').addEventListener('click', () => {
       if (!confirm('Sign out from all devices? You will be logged out here too.')) return;
       if(typeof Toast !== 'undefined') Toast.show('Signed out from all devices.', 'info'); else alert('Signed out');
       setTimeout(() => { window.location.href = '{{ url('/logout') }}'; }, 1000);
     });
 
-    // =====================================
-    // 4. PREFERENCES & DARK MODE LOGIC
-    // =====================================
     (function restorePrefs() {
       const isDark = localStorage.getItem('mc_dark_mode') === '1';
       document.getElementById('themeLightCard').classList.toggle('selected', !isDark);
@@ -472,46 +436,37 @@
           document.body.classList.add('dark-mode');
       }
 
-      const lang = localStorage.getItem('mc_pref_lang');
-      const tz   = localStorage.getItem('mc_pref_tz');
-      if (lang) document.getElementById('prefLang').value     = lang;
-      if (tz)   document.getElementById('prefTimezone').value = tz;
-
       const savedEmail = localStorage.getItem('mc_notif_email');
       const savedSms   = localStorage.getItem('mc_notif_sms');
-      if (savedEmail !== null) document.getElementById('toggleEmail').checked = savedEmail === '1';
-      if (savedSms   !== null) document.getElementById('toggleSms').checked   = savedSms   === '1';
+      if (savedEmail !== null && document.getElementById('toggleEmail')) document.getElementById('toggleEmail').checked = savedEmail === '1';
+      if (savedSms   !== null && document.getElementById('toggleSms')) document.getElementById('toggleSms').checked   = savedSms   === '1';
     })();
 
-    // LIVE PREVIEW SAAT KARTU DIKLIK
     document.querySelectorAll('.theme-card').forEach(card => {
       card.addEventListener('click', () => {
         document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
 
-        // Langsung ubah warna layar (Live Preview Seketika!)
         const isDark = card.dataset.theme === 'dark';
         document.documentElement.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('dark-mode', isDark);
       });
     });
 
-    // SIMPAN PERMANEN
     document.getElementById('btnSavePrefs').addEventListener('click', () => {
       const dark = document.querySelector('.theme-card.selected')?.dataset.theme === 'dark';
 
       document.documentElement.classList.toggle('dark-mode', dark);
       document.body.classList.toggle('dark-mode', dark);
 
-      localStorage.setItem('mc_dark_mode',   dark ? '1' : '0');
-      localStorage.setItem('mc_notif_email', document.getElementById('toggleEmail').checked ? '1' : '0');
-      localStorage.setItem('mc_notif_sms',   document.getElementById('toggleSms').checked   ? '1' : '0');
-      localStorage.setItem('mc_pref_lang',   document.getElementById('prefLang').value);
-      localStorage.setItem('mc_pref_tz',     document.getElementById('prefTimezone').value);
+      localStorage.setItem('mc_dark_mode', dark ? '1' : '0');
+      
+      if(document.getElementById('toggleEmail')) localStorage.setItem('mc_notif_email', document.getElementById('toggleEmail').checked ? '1' : '0');
+      if(document.getElementById('toggleSms')) localStorage.setItem('mc_notif_sms', document.getElementById('toggleSms').checked ? '1' : '0');
+
       if(typeof Toast !== 'undefined') Toast.show('Preferences saved successfully!', 'success'); else alert('Saved!');
     });
 
-    // DISCARD PREFERENCES
     document.getElementById('btnDiscardPrefs').addEventListener('click', () => {
       if (!confirm('Discard unsaved preference changes?')) return;
 
@@ -551,42 +506,6 @@
         list.innerHTML = '';
         const notifs = [
             { color:'#10b981', title:'<span style="display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;color:#059669;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> No New Alerts</span>', body: 'You are all caught up with your medical updates!' }
-        ];
-        notifs.forEach(n => {
-          const div = document.createElement('div');
-          div.className = 'notif-item';
-          div.innerHTML = `<div class="notif-dot" style="background:${n.color};"></div><div><h5 style="margin-bottom:4px;">${n.title}</h5><p>${n.body}</p></div>`;
-          list.appendChild(div);
-        });
-      }
-
-      bellWrap.addEventListener('click', e => {
-        e.stopPropagation();
-        renderNotifs();
-        panel.classList.toggle('open');
-      });
-      document.addEventListener('click', () => panel.classList.remove('open'));
-      document.getElementById('clearNotifs')?.addEventListener('click', () => { panel.classList.remove('open'); });
-    })();
-  </script>
-
-  <script>
-    (function() {
-      const bellWrap = document.querySelector('.bell-wrapper');
-      if (!bellWrap) return;
-
-      const panel = document.createElement('div');
-      panel.className = 'notif-panel';
-      panel.innerHTML = '<div class="notif-header"><h4 style="display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> Notifications</h4><span id="clearNotifs">Mark all read</span></div><div id="notifList"></div>';
-      bellWrap.style.position = 'relative';
-      bellWrap.appendChild(panel);
-
-      function renderNotifs() {
-        const list = document.getElementById('notifList');
-        if (!list) return;
-        list.innerHTML = '';
-        const notifs = [
-            { color:'#94a3b8', title:'<span style="display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;color:#059669;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> All Clear</span>', body: 'No new notifications right now.' }
         ];
         notifs.forEach(n => {
           const div = document.createElement('div');

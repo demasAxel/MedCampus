@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
-    // --- 1. DASHBOARD ---
     public function dashboard()
     {
         $doctorId = Auth::user()->id_user;
@@ -46,22 +45,18 @@ class DoctorController extends Controller
         return view('doctor-dashboard', compact('todaySchedule', 'todaysPatients', 'totalPatients', 'pendingExams', 'completedExams'));
     }
 
-    // --- 2. TODAY'S PATIENTS (VERSI MULTI-SCHEDULE - SUDAH DIPERBAIKI) ---
     public function patients()
     {
         $doctorId = Auth::user()->id_user;
         $today = now()->format('Y-m-d');
 
-        // Ambil SEMUA schedule dokter hari ini (bisa lebih dari 1 shift)
         $todaySchedules = DB::table('doctor_schedules')
             ->where('id_user', $doctorId)
             ->where('schedule_date', $today)
             ->get();
 
-        // Kumpulkan semua id_schedule hari ini ke dalam Array
         $scheduleIds = $todaySchedules->pluck('id_schedule')->toArray();
 
-        // Tarik semua pasien dari semua ID schedule tersebut
         $patients = DB::table('appointments')
             ->join('users', 'appointments.id_user', '=', 'users.id_user')
             ->leftJoin('patient_profiles', 'users.id_user', '=', 'patient_profiles.id_user')
@@ -81,7 +76,6 @@ class DoctorController extends Controller
         return view('doctor-patients', compact('patients'));
     }
 
-    // --- 3. MEDICAL RECORDS ---
     public function records()
     {
         $records = DB::table('medical_records')
@@ -111,12 +105,10 @@ class DoctorController extends Controller
         return view('doctor-records', compact('records'));
     }
 
-    // --- FITUR JADWAL DOKTER ---
     public function schedule()
     {
         $doctorId = Auth::user()->id_user;
         
-        // Ambil semua jadwal milik dokter yang sedang login
         $schedules = DB::table('doctor_schedules')
             ->where('id_user', $doctorId)
             ->orderBy('schedule_date', 'asc')
@@ -125,7 +117,6 @@ class DoctorController extends Controller
         return view('doctor-schedule', compact('schedules'));
     }
 
-    // --- 4. NEW ENTRY ---
     public function newEntry(Request $request)
     {
         $appointmentId = $request->query('appointment_id');
@@ -149,7 +140,6 @@ class DoctorController extends Controller
         return view('doctor-new-entry', compact('appointmentId', 'medicines', 'appointment'));
     }
 
-    // --- 5. STORE ENTRY TO HEIDISQL ---
     public function storeEntry(Request $request)
     {
         $appointmentId = $request->query('appointment_id') ?? $request->input('appointment_id') ?? $request->appointment_id;
@@ -218,13 +208,11 @@ class DoctorController extends Controller
         return redirect('/doctor/records');
     }
 
-    // --- FUNGSI TAMPILKAN HALAMAN PROFIL ---
     public function profile()
     {
         return view('doctor-profile');
     }
 
-    // --- FUNGSI UPDATE PROFIL ---
     public function updateProfile(Request $request)
     {
         $userId = Auth::user()->id_user;
@@ -239,7 +227,6 @@ class DoctorController extends Controller
         return redirect()->back(); 
     }
 
-    // --- FUNGSI UPDATE PASSWORD ---
     public function updatePassword(Request $request)
     {
         $user = Auth::user();

@@ -142,19 +142,34 @@
           <button class="btn btn-outline" id="btnList">List View</button>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:13px;font-weight:700;color:var(--text-gray);text-transform:uppercase;">Filter:</span>
-          <select id="deptFilter" class="admin-form-select" style="padding:8px 32px 8px 16px;width:200px;background-color:var(--white);cursor:pointer;">
+          <span style="font-size:13px;font-weight:700;color:var(--text-gray);text-transform:uppercase;">Filter & Sort:</span>
+          
+          <!-- SORTIR WAKTU -->
+          <select id="sortFilter" class="admin-form-select" style="padding:8px 32px 8px 16px;width:140px;background-color:var(--white);cursor:pointer;">
+            <option value="newest">Latest Update</option>
+            <option value="oldest">Earliest Update</option>
+          </select>
+
+          <!-- FILTER DEPARTEMEN -->
+          <select id="deptFilter" class="admin-form-select" style="padding:8px 32px 8px 16px;width:180px;background-color:var(--white);cursor:pointer;">
             <option value="all">All Departments</option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Neurology">Neurology</option>
-            <option value="Pediatrics">Pediatrics</option>
             <option value="General Medicine">General Medicine</option>
             <option value="Dental Clinic">Dental Clinic</option>
           </select>
-          <select id="statusFilter" class="admin-form-select" style="padding:8px 32px 8px 16px;width:160px;background-color:var(--white);cursor:pointer;">
+
+          <!-- FILTER SHIFT -->
+          <select id="shiftFilter" class="admin-form-select" style="padding:8px 32px 8px 16px;width:140px;background-color:var(--white);cursor:pointer;">
+            <option value="all">All Shifts</option>
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+          </select>
+
+          <!-- FILTER STATUS -->
+          <select id="statusFilter" class="admin-form-select" style="padding:8px 32px 8px 16px;width:140px;background-color:var(--white);cursor:pointer;">
             <option value="all">All Status</option>
             <option value="active">Active</option>
-            <option value="leave">On Leave</option>
+            <option value="inactive">Inactive</option>
           </select>
         </div>
       </div>
@@ -168,7 +183,9 @@
           <thead><tr><th>Doctor</th><th>Department</th><th>Shift &amp; Time</th><th>Room</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody id="schedBody">
             @foreach($schedules as $sch)
-            <tr class="schedule-row" data-date="{{ \Carbon\Carbon::parse($sch->schedule_date)->format('Y-m-d') }}">
+            <tr class="schedule-row" 
+                data-date="{{ \Carbon\Carbon::parse($sch->schedule_date)->format('Y-m-d') }}" 
+                data-updated="{{ $sch->updated_at ?? $sch->created_at }}">
               <td>
                 <div style="display:flex;align-items:center;gap:12px;">
                   <div style="width:40px;height:40px;background:#cbd5e1;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:16px;flex-shrink:0;">
@@ -252,44 +269,55 @@
     let currentView = 'weekly'; 
     let selectedDate = '';      
 
-    // FUNGSI UNTUK MEMBUKA MODAL DELETE
     function openDeleteModal(deleteUrl) {
         document.getElementById('confirmDeleteBtn').href = deleteUrl; 
         document.getElementById('customDeleteModal').classList.add('active');
     }
-    // FUNGSI UNTUK MENUTUP MODAL DELETE
     function closeDeleteModal() {
         document.getElementById('customDeleteModal').classList.remove('active');
     }
 
     function applyFilters() {
-      // 🌟 1. Pastikan semua pencarian diubah ke huruf kecil (toLowerCase)
-      const q      = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
-      const dept   = document.getElementById('deptFilter') ? document.getElementById('deptFilter').value.toLowerCase() : 'all';
-      const status = document.getElementById('statusFilter') ? document.getElementById('statusFilter').value.toLowerCase() : 'all'; // 🌟 TAMBAHAN: Ambil nilai filter Status
+      const q       = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
+      const dept    = document.getElementById('deptFilter') ? document.getElementById('deptFilter').value.toLowerCase() : 'all';
+      const status  = document.getElementById('statusFilter') ? document.getElementById('statusFilter').value.toLowerCase() : 'all';
+      const shift   = document.getElementById('shiftFilter') ? document.getElementById('shiftFilter').value.toLowerCase() : 'all';
+      const sortVal = document.getElementById('sortFilter') ? document.getElementById('sortFilter').value : 'newest';
       
-      const rows = document.querySelectorAll('.schedule-row');
+      const tbody = document.getElementById('schedBody');
+      const rows = Array.from(tbody.querySelectorAll('.schedule-row'));
       let visibleCount = 0;
 
+      // PROSES SORTING (BARU & LAMA)
+      rows.sort((a, b) => {
+          let dateA = new Date(a.getAttribute('data-updated') || 0);
+          let dateB = new Date(b.getAttribute('data-updated') || 0);
+          return sortVal === 'newest' ? dateB - dateA : dateA - dateB;
+      });
+
+      // PROSES FILTERING DAN RE-ORDER HTML
       rows.forEach(row => {
-        // 🌟 2. Ambil teks dari baris dan ubah ke huruf kecil juga biar cocok
+        tbody.appendChild(row); // Susun ulang urutan tabel berdasarkan hasil sort
+
         const text       = row.innerText.toLowerCase();
         const deptText   = row.children[1] ? row.children[1].innerText.toLowerCase() : '';
-        const statusText = row.children[4] ? row.children[4].innerText.toLowerCase() : ''; // 🌟 TAMBAHAN: Ambil kolom ke-5 (Status)
+        const shiftText  = row.children[2] ? row.children[2].innerText.toLowerCase() : '';
+        const statusText = row.children[4] ? row.children[4].innerText.toLowerCase() : '';
         const rowDate    = row.getAttribute('data-date');
 
-        // 🌟 3. Logika Pencocokan
+        // Cocokin kriteria
         const matchQ      = text.includes(q);
         const matchDept   = dept === 'all' || deptText.includes(dept);
-        const matchStatus = status === 'all' || statusText.includes(status); // 🌟 TAMBAHAN: Cek kecocokan status
+        const matchStatus = status === 'all' || statusText.includes(status);
+        const matchShift  = shift === 'all' || shiftText.includes(shift);
         
         let matchDate = true;
         if (currentView === 'weekly' && selectedDate !== '') {
             matchDate = (rowDate === selectedDate);
         }
 
-        // 🌟 4. Gabungkan semua syaratnya (TERMASUK STATUS!)
-        if (matchQ && matchDept && matchStatus && matchDate) {
+        // Tampilkan kalau lulus semua saringan
+        if (matchQ && matchDept && matchStatus && matchShift && matchDate) {
           row.style.display = '';
           visibleCount++;
         } else {
@@ -297,6 +325,7 @@
         }
       });
 
+      // Hitungan Empty State
       const emptyState = document.getElementById('emptyState');
       const countLabel = document.getElementById('countLabel');
       
@@ -314,6 +343,19 @@
       }
     }
 
+    // PASANG LISTENER BARU BIAR OTOMATIS JALAN PAS DIKLIK
+    const searchInput = document.getElementById('searchInput');
+    const deptFilter  = document.getElementById('deptFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const shiftFilter = document.getElementById('shiftFilter');
+    const sortFilter  = document.getElementById('sortFilter');
+    
+    if (searchInput)  searchInput.addEventListener('input', applyFilters);
+    if (deptFilter)   deptFilter.addEventListener('change', applyFilters);
+    if (statusFilter) statusFilter.addEventListener('change', applyFilters);
+    if (shiftFilter)  shiftFilter.addEventListener('change', applyFilters);
+    if (sortFilter)   sortFilter.addEventListener('change', applyFilters);
+
     function buildWeekHeader() {
       const header = document.getElementById('weekHeader');
       if (!header) return;
@@ -328,7 +370,6 @@
         let currentDay = new Date(monday);
         currentDay.setDate(monday.getDate() + i);
 
-        // 🌟 PERBAIKAN: Ambil tanggal lokal (WIB), bukan UTC!
         let y = currentDay.getFullYear();
         let m = String(currentDay.getMonth() + 1).padStart(2, '0');
         let dNum = String(currentDay.getDate()).padStart(2, '0');
@@ -362,7 +403,6 @@
         header.appendChild(div);
       });
 
-      // Menjalankan klik otomatis saat tidak berada di mode List View
       setTimeout(() => {
         if(localStorage.getItem('savedScheduleView') !== 'list') {
             const todayTab = document.querySelector('.admin-schedule-day.active');
@@ -402,16 +442,10 @@
         });
     }
 
-    const searchInput = document.getElementById('searchInput');
-    const deptFilter = document.getElementById('deptFilter');
-    
-    if (searchInput) searchInput.addEventListener('input', applyFilters);
-    if (deptFilter) deptFilter.addEventListener('change', applyFilters);
 
     document.addEventListener('DOMContentLoaded', () => {
       buildWeekHeader();
       
-      // Jika memori mengatakan user sedang di List View, panggil aksi tombol List View
       if(localStorage.getItem('savedScheduleView') === 'list') {
           setTimeout(() => {
               if (btnList) btnList.click();

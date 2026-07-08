@@ -210,24 +210,20 @@
         if (!roleInput || !deptInput) return;
 
         if (roleInput.value === 'Doctor') {
-            // JIKA DOKTER: Buka gembok dan warnai putih
             deptInput.disabled = false;
             deptInput.style.backgroundColor = '#ffffff'; 
             deptInput.style.cursor = 'pointer';
         } else {
-            // JIKA BUKAN DOKTER: Gembok, kosongkan, dan warnai abu-abu kusam
             deptInput.value = '';       
             deptInput.disabled = true;  
             deptInput.style.backgroundColor = 'var(--bg-gray, #f8fafc)'; 
             deptInput.style.cursor = 'not-allowed';
         }
-        updatePreview(); // Tetap update tampilan kartu
+        updatePreview();
     }
 
-    // Jalankan sekali saat halaman load buat mastiin statusnya sesuai pilihan awal
     toggleDepartment();
 
-    // Pasang pendeteksi perubahan
     roleInput.addEventListener('change', toggleDepartment);
   </script>
 </body>

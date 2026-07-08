@@ -171,7 +171,6 @@
   <script src="{{ asset('js/utils.js') }}"></script>
   
   <script>
-    // 1. Script Profil Dropdown
     function toggleProfileDropdown(event) {
         if (event) event.stopPropagation();
         const drop = document.getElementById('mcProfileDropdown');
@@ -188,7 +187,6 @@
         }
     });
 
-    // 2. 🌟 SCRIPT BARU: Gabungan Filter Tab & Search Bar!
     function filterTable() {
         const searchQuery = document.getElementById('searchPatients').value.toLowerCase();
         const activeFilter = document.querySelector('.btn-filter-active').getAttribute('data-filter');
@@ -196,16 +194,14 @@
         let visibleCount = 0;
 
         rows.forEach(row => {
-            const status = row.getAttribute('data-status'); // W, I, atau C
-            const rowText = row.textContent.toLowerCase(); // Ambil semua teks di baris itu
+            const status = row.getAttribute('data-status');
+            const rowText = row.textContent.toLowerCase();
             let matchFilter = false;
 
-            // Cek kondisi Tab
             if (activeFilter === 'all') matchFilter = true;
             else if (activeFilter === 'queue' && (status === 'W' || status === 'I')) matchFilter = true;
             else if (activeFilter === 'done' && status === 'F') matchFilter = true;
 
-            // Cek kondisi Search (Gabungkan)
             if (matchFilter && rowText.includes(searchQuery)) {
                 row.style.display = '';
                 visibleCount++;
@@ -214,10 +210,8 @@
             }
         });
 
-        // Update tulisan angka di bawah tabel
         document.getElementById('showing-count').textContent = visibleCount;
         
-        // Tampilkan pesan kosong jika tidak ada baris yang muncul
         if(visibleCount === 0) {
             document.getElementById('emptyState').style.display = 'block';
         } else {
@@ -225,16 +219,14 @@
         }
     }
 
-    // Pasang alat pendeteksi klik di Tab
     document.querySelectorAll('.btn-filter').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('btn-filter-active'));
             this.classList.add('btn-filter-active');
-            filterTable(); // Panggil fungsi saringan
+            filterTable();
         });
     });
 
-    // Pasang alat pendeteksi ketikan di Search Bar
     document.getElementById('searchPatients').addEventListener('input', filterTable);
 
   </script>

@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use App\Mail\OtpMail;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -40,41 +44,77 @@ class AuthController extends Controller
 
     public function loginProcess(Request $request)
     {
-        // 1. Validasi Input
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // 2. Proses Pencocokan Email & Sandi
-        if (\Auth::attempt(['user_email' => $credentials['email'], 'password' => $credentials['password']])) {
+        if (\Auth::validate(['user_email' => $credentials['email'], 'password' => $credentials['password']])) {
             
-            // 3. Buat Sesi Baru (Biar nggak gampang di-hack)
-            $request->session()->regenerate();
-            $user = \Auth::user();
+            $user = \App\Models\User::where('user_email', $credentials['email'])->first();
 
-            // 🛑 SATPAM GALAK: CEK STATUS SUSPEND DI SINI 🛑
             if ($user->user_status === 'suspended') {
-                \Auth::logout(); // Langsung tendang keluar saat itu juga
-                $request->session()->invalidate(); // Hapus sesi
-                $request->session()->regenerateToken(); // Cegah error keamanan
-                
-                // Kembalikan ke halaman login dengan pesan error khusus
                 return back()->withErrors(['msg' => 'Akses Ditolak: Akun Anda sedang ditangguhkan (Suspended). Silakan hubungi Admin.']);
             }
 
-            // 4. Arahkan ke Dashboard masing-masing jika status AMAN
+            if ($user->id_role == '3') {
+                $otpCode = rand(100000, 999999);
+
+                $user->otp_code = $otpCode;
+                $user->otp_expires_at = now()->addMinutes(5);
+                $user->save();
+
+                \Illuminate\Support\Facades\Mail::to($user->user_email)->send(new \App\Mail\OtpMail($otpCode));
+
+                $request->session()->put('temp_user_id', $user->id_user); 
+
+                return redirect('/verify-otp');
+            }
+
+            \Auth::login($user);
+            $request->session()->regenerate();
+
+            if ($user->id_role == '2') {
+                return redirect('/doctor/dashboard');
+            }
+
+            return redirect('/patient/dashboard');
+        }
+
+        return back()->withErrors(['msg' => 'Email atau Password salah!']);
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate(['otp_code' => 'required']);
+
+        $userId = $request->session()->get('temp_user_id');
+        
+        if (!$userId) {
+            return redirect('/login');
+        }
+
+        $user = \App\Models\User::where('id_user', $userId)->first();
+
+        if ($user && $user->otp_code == $request->otp_code && $user->otp_expires_at > now()) {
+            
+            \Auth::login($user);
+            $request->session()->regenerate();
+            
+            $user->otp_code = null;
+            $user->otp_expires_at = null;
+            $user->save();
+            $request->session()->forget('temp_user_id');
+
             if ($user->id_role == '3') {
                 return redirect('/admin/dashboard');
             } elseif ($user->id_role == '2') {
                 return redirect('/doctor/dashboard');
             }
 
-            // Kalau id_role = 1 (Pasien/Mahasiswa)
             return redirect('/patient/dashboard');
         }
 
-        // Kalau Email/Sandi yang dimasukkan salah
-        return back()->withErrors(['msg' => 'Email atau Password salah!']);
+        return back()->with('error', 'Kode OTP salah atau sudah kedaluwarsa!');
     }
 }

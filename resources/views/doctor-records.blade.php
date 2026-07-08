@@ -129,7 +129,6 @@
   </div>
 
   <script>
-    // Menyedot Data Obat dari Laravel ke Javascript
     const REAL_RECORDS = [
         @foreach($records as $r)
         {
@@ -227,7 +226,6 @@
       document.getElementById('m-doctor').textContent = `Doc. ${rec.doctor}`;
       document.getElementById('m-notes').textContent = rec.notes;
 
-      // Fitur Injeksi Data Obat ke Modal
       const medsContainer = document.getElementById('m-meds');
       medsContainer.innerHTML = '';
       if (rec.meds && rec.meds.length > 0) {

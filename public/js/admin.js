@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //     return;
     // }
 
-    // // Update nama admin di topbar
     // document.querySelectorAll(".admin-info h4").forEach((el) => {
     //     el.textContent = session.name;
     // });

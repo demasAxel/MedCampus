@@ -85,7 +85,6 @@
             menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
         }
         
-        // Auto-close jika klik sembarang tempat di layar
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('mcDropdownMenu');
             const toggle = document.getElementById('mcProfileToggle');

@@ -72,7 +72,6 @@
             menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
         }
         
-        // Auto-close jika klik sembarang tempat di layar
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('mcDropdownMenu');
             const toggle = document.getElementById('mcProfileToggle');
@@ -187,13 +186,11 @@
           const clinic = card.getAttribute('data-clinic');
           const doctor = card.getAttribute('data-doctor');
 
-          // Cek Tombol Filter (Hanya All, Completed, Cancelled)
           let matchFilter = false;
           if (filterType === 'All') matchFilter = true;
           else if (filterType === 'Completed' && status === 'Completed') matchFilter = true;
           else if (filterType === 'Cancelled' && status === 'Cancelled') matchFilter = true;
 
-          // Cek Kolom Pencarian
           let matchSearch = clinic.includes(query) || doctor.includes(query);
 
           if (matchFilter && matchSearch) {
@@ -204,13 +201,11 @@
           }
         });
 
-        // Tampilkan "No Results Found"
         if (cards.length > 0) {
             noMatchState.style.display = visibleCount === 0 ? 'block' : 'none';
         }
       }
 
-      // Event Listener Tombol Filter
       filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           filterBtns.forEach(b => {
@@ -226,7 +221,6 @@
         });
       });
 
-      // Event Listener Pencarian
       searchInput.addEventListener('input', filterHistory);
     });
   </script>

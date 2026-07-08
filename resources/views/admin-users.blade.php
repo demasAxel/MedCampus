@@ -350,7 +350,6 @@
       Toast.show(`${user?.name} has been deleted.`, 'info');
     });
 
-    // Close delete modal on backdrop click
     document.getElementById('deleteModal').addEventListener('click', e => {
       if (e.target === document.getElementById('deleteModal')) {
         document.getElementById('deleteModal').classList.remove('active');

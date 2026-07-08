@@ -172,7 +172,6 @@
     // ── Dark Mode toggle ──────────────────────────────────────────────────────
     const darkToggle = document.querySelector('.preference-card:nth-child(2) .toggle-switch input');
     if (darkToggle) {
-      // Restore dark mode state
       const isDark = localStorage.getItem('mc_dark_mode') === '1';
       darkToggle.checked = isDark;
       if (isDark) document.body.classList.add('dark-mode');

@@ -9,6 +9,8 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OtpMail;
 
 // 1. HALAMAN PUBLIK & AUTENTIKASI
 Route::get('/', function () {
@@ -131,3 +133,13 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/admin/users/delete/{id}', [UserController::class, 'destroy']);
 Route::get('/api/doctor-shifts', [App\Http\Controllers\PatientController::class, 'getDoctorShifts']);
+
+Route::get('/verify-otp', function () {
+    if (!session()->has('temp_user_id')) {
+        return redirect('/login');
+    }
+    return view('otp');
+})->name('otp.verify');
+
+
+Route::post('/verify-otp', [App\Http\Controllers\AuthController::class, 'verifyOtp']);

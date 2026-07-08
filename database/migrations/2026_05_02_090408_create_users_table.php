@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('password', 255);
             $table->timestamps();
 
-            // Relasi ke tabel roles
             $table->foreign('id_role')->references('id_role')->on('roles')->onDelete('cascade');
         });
     }

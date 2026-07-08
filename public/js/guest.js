@@ -28,10 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
         bar.style.width      = score > 0 ? widths[score-1] : '0';
       });
     }
-    // Penutup block if (registerForm) yang tadi hilang:
   } 
 
-  // ─── LANDING PAGE: smooth scroll ─────────────────────────────────────────
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));

@@ -66,10 +66,7 @@
             <label class="admin-form-label">Clinical Department <span style="color:#ef4444;">*</span></label>
             <select name="department" id="add-dept" class="admin-form-select">
               <option value="General Medicine">General Medicine</option>
-              <option value="Cardiology">Cardiology</option>
-              <option value="Neurology">Neurology</option>
-              <option value="Pediatrics">Pediatrics</option>
-              <option value="Dental Unit">Dental Unit</option>
+              <option value="Dental Unit">Dental Clinic</option>
             </select>
           </div>
           <div class="admin-form-group">
