@@ -136,10 +136,10 @@
             <tbody id="dashTbody">
                 @forelse($todaysPatients as $p)
                     @php
-                        $statusText = $p->status == 'W' ? 'Waiting' : ($p->status == 'I' ? 'In Progress' : 'Completed');
-                        $statusClass = $p->status == 'W' ? 'badge-waiting' : ($p->status == 'I' ? 'badge-consultation' : 'badge-completed');
-                        $btnLabel = $p->status == 'W' ? 'Start Exam' : ($p->status == 'I' ? 'Resume' : 'View Record');
-                        $btnClass = $p->status == 'C' ? 'btn-outline' : 'btn-primary';
+                        $statusText = ($p->status == 'W') ? 'Waiting' : (($p->status == 'F') ? 'Completed' : 'Cancelled');
+                        $statusClass = ($p->status == 'W') ? 'badge-waiting' : (($p->status == 'F') ? 'badge-completed' : 'badge-suspended');
+                        $btnLabel = ($p->status == 'F') ? 'View Record' : 'Start Exam';
+                        $btnClass = ($p->status == 'F') ? 'btn-outline' : 'btn-primary';
                         $age = $p->date_of_birth ? \Carbon\Carbon::parse($p->date_of_birth)->age : '?';
                         
                         $time = '00:00';
@@ -165,19 +165,21 @@
                         <td>{{ $time }} WIB</td>
                         <td><span class="badge {{ $statusClass }}">{{ $statusText }}</span></td>
                         <td>
-                            @if($p->status == 'C')
-                                <a href="{{ url('/doctor/records') }}" 
-                                  class="btn {{ $btnClass }}" 
+                            @if($p->status == 'F')
+                                <a href="{{ url('/doctor/records') }}?appointment_id={{ $p->id_appointments }}" 
+                                  class="btn btn-outline" 
                                   style="text-decoration:none;">
-                                    {{ $btnLabel }}
+                                    View Record
                                 </a>
-                            @else
+                            @elseif($p->status == 'W')
                                 <a href="{{ url('/doctor/new-entry') }}?appointment_id={{ $p->id_appointments }}" 
-                                  class="btn {{ $btnClass }}" 
+                                  class="btn btn-primary" 
                                   style="text-decoration:none;" 
                                   onclick="sessionStorage.setItem('mc_entry_origin','{{ url('/doctor/dashboard') }}');">
-                                    {{ $btnLabel }}
+                                    Start Exam
                                 </a>
+                            @else
+                                <span class="badge badge-suspended">No Action</span>
                             @endif
                         </td>
                     </tr>
