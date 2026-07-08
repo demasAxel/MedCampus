@@ -18,6 +18,8 @@ class DoctorController extends Controller
             ->where('schedule_date', $today)
             ->first();
 
+        $shiftStart = $todaySchedule ? $this->getShiftStartTime($todaySchedule->shift) : '08:00';
+
         $todaysPatients = [];
         $totalPatients = 0;
         $pendingExams = 0;
@@ -42,7 +44,29 @@ class DoctorController extends Controller
             $completedExams = $todaysPatients->where('status', 'F')->count();
         }
 
-        return view('doctor-dashboard', compact('todaySchedule', 'todaysPatients', 'totalPatients', 'pendingExams', 'completedExams'));
+        $shiftStart = '08:00'; // Default
+        if ($todaySchedule) {
+            $s = strtolower($todaySchedule->shift);
+            if (str_contains($s, 'morning'))   $shiftStart = '08:00';
+            elseif (str_contains($s, 'afternoon')) $shiftStart = '14:00';
+            elseif (str_contains($s, 'evening'))   $shiftStart = '20:00';
+            else {
+                $parts = explode('-', $todaySchedule->shift);
+                $shiftStart = count($parts) == 2 ? trim($parts[0]) : '08:00';
+            }
+        }
+
+        return view('doctor-dashboard', compact('todaySchedule', 'todaysPatients', 'totalPatients', 'pendingExams', 'completedExams', 'shiftStart'));
+    }
+
+    private function getShiftStartTime($shiftName) {
+        $s = strtolower($shiftName);
+        if (str_contains($s, 'morning'))   return '08:00';
+        if (str_contains($s, 'afternoon')) return '14:00';
+        if (str_contains($s, 'evening'))   return '20:00';
+        
+        $parts = explode('-', $shiftName);
+        return count($parts) == 2 ? trim($parts[0]) : '08:00';
     }
 
     public function patients()

@@ -142,22 +142,9 @@
                         $btnClass = ($p->status == 'F') ? 'btn-outline' : 'btn-primary';
                         $age = $p->date_of_birth ? \Carbon\Carbon::parse($p->date_of_birth)->age : '?';
                         
-                        $time = '00:00';
-                        if ($todaySchedule && !empty($todaySchedule->shift)) {
-                            $shiftStr = strtolower($todaySchedule->shift);
-                            if (str_contains($shiftStr, 'morning')) {
-                                $waktuMulai = strtotime('08:00');
-                            } elseif (str_contains($shiftStr, 'afternoon')) {
-                                $waktuMulai = strtotime('13:00');
-                            } elseif (str_contains($shiftStr, 'evening')) {
-                                $waktuMulai = strtotime('18:00');
-                            } else {
-                                $shiftParts = explode('-', $todaySchedule->shift);
-                                $waktuMulai = strtotime(trim($shiftParts[0]));
-                            }
-                            $tambahanMenit = ($p->queue_number - 1) * 30;
-                            $time = date('H:i', strtotime("+$tambahanMenit minutes", $waktuMulai));
-                        }
+                        $waktuMulai = strtotime($shiftStart ?? '08:00');
+                        $tambahanMenit = ($p->queue_number - 1) * 30;
+                        $time = date('H:i', strtotime("+$tambahanMenit minutes", $waktuMulai));
                     @endphp
                     <tr>
                         <td><span class="queue-badge">{{ $p->queue_number }}</span></td>
