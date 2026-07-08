@@ -84,6 +84,7 @@
               <option value="Anti-inflammatory">Anti-inflammatory (Obat anti-radang)</option>
               <option value="Cardiovascular">Cardiovascular (Obat jantung & darah tinggi)</option>
               <option value="Antifungal">Antifungal (Obat anti-jamur)</option>
+              <option value="Cough & Cold">Cough & Cold (Pereda batuk & pilek)</option>
             </select>
           </div>
           <div class="admin-form-group">
