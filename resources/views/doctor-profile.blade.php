@@ -279,10 +279,6 @@
               <h4>Dark Mode</h4>
             </div>
           </div>
-          <p class="system-note" style="margin-top:14px;" id="themeNote">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-            System default is currently active.
-          </p>
         </div>
 
         <div style="background:var(--white);border-radius:16px;border:1px solid var(--border);padding:24px 32px;display:flex;justify-content:space-between;align-items:center;">
