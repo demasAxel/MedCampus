@@ -1,58 +1,438 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  
+# 🏥 MedCampus
+
+### Sistem Manajemen Klinik Kesehatan Universitas
+
+[![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev)
+[![Midtrans](https://img.shields.io/badge/Midtrans-Payment-008080?style=for-the-badge&logo=midtrans&logoColor=white)](https://midtrans.com)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![PHPUnit](https://img.shields.io/badge/PHPUnit-12-007EC6?style=flat-square&logo=php&logoColor=white)](https://phpunit.de)
+[![SQLite](https://img.shields.io/badge/Database-SQLite%20%7C%20MySQL-003B57?style=flat-square&logo=sqlite&logoColor=white)](https://sqlite.org)
+[![Maintainability](https://img.shields.io/badge/Maintainability-A-00CC66?style=flat-square)]()
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
+
+---
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <strong>MedCampus</strong> adalah sistem informasi klinik kesehatan kampus yang dirancang untuk memudahkan mahasiswa, dosen, dan staf dalam mengakses layanan kesehatan di lingkungan universitas.
 </p>
 
-## About Laravel
+[✨ Demo](#-demo) •
+[🚀 Fitur](#-fitur) •
+[🏗️ Arsitektur](#️-arsitektur) •
+[⚙️ Instalasi](#️-instalasi) •
+[📖 Panduan](#-panduan) •
+[🤝 Kontribusi](#-kontribusi)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<br>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+![MedCampus Screenshot](https://via.placeholder.com/800x400/008080/FFFFFF?text=MedCampus+Dashboard)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+</div>
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## ✨ Demo
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+> 🔗 **Akses Aplikasi:** [https://medcampus.example.com](https://medcampus.example.com)
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Akun Demo
 
-## Agentic Development
+| Role | Email | Password |
+|------|-------|----------|
+| 🛡️ **Admin** | `admin@medcampus.ac.id` | `password` |
+| 🩺 **Dokter** | `dokter@medcampus.ac.id` | `password` |
+| 👤 **Pasien** | `pasien@medcampus.ac.id` | `password` |
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
 
-```bash
-composer require laravel/boost --dev
+## 🚀 Fitur
 
-php artisan boost:install
+### 👥 Multi-Role System
+
+<table>
+<tr>
+  <th width="33%">🛡️ Admin</th>
+  <th width="33%">🩺 Dokter</th>
+  <th width="34%">👤 Pasien</th>
+</tr>
+<tr>
+  <td valign="top">
+  
+  - Dashboard statistik & analitik
+  - Manajemen pengguna (CRUD)
+  - Manajemen jadwal dokter
+  - Inventaris obat & stok
+  - Pengaturan sistem
+  - Manajemen poli/departemen
+    
+  </td>
+  <td valign="top">
+  
+  - Dashboard pasien hari ini
+  - Daftar pasien & antrean
+  - Rekam medis elektronik
+  - Resep obat digital
+  - Jadwal praktik pribadi
+  - Profil & pengaturan akun
+    
+  </td>
+  <td valign="top">
+  
+  - Booking janji temu online
+  - Tiket antrean digital
+  - Tracking antrean real-time
+  - Riwayat kunjungan
+  - Detail resep & diagnosis
+  - Pembayaran via Midtrans
+    
+  </td>
+</tr>
+</table>
+
+### 🌟 Fitur Unggulan
+
+| Fitur | Deskripsi |
+|-------|-----------|
+| 📅 **Booking Online** | Pasien dapat memesan janji dengan dokter pilihan dan melihat slot waktu tersedia |
+| 🔄 **Antrean Real-time** | Sistem antrean dengan nomor urut dan estimasi waktu tunggu |
+| 💳 **Pembayaran Digital** | Integrasi Midtrans untuk pembayaran konsultasi online |
+| 📧 **Notifikasi Email** | Konfirmasi booking, pengingat janji, dan notifikasi pembatalan otomatis via email |
+| 📋 **Rekam Medis Digital** | Catatan diagnosis, resep obat, dan riwayat kunjungan pasien tersimpan rapi |
+| 💊 **Manajemen Farmasi** | Inventaris obat lengkap dengan status stok (tersedia, menipis, habis) |
+| 🌙 **Dark Mode** | Tampilan antarmuka dengan dukungan mode gelap untuk kenyamanan pengguna |
+| 🔒 **Sistem OTP** | Verifikasi dua langkah menggunakan kode OTP untuk keamanan akun |
+
+---
+
+## 🏗️ Arsitektur
+
+### Diagram Basis Data
+
+```
+roles ─── users ───┬── doctor_profiles ─── polis
+                   ├── patient_profiles
+                   ├── doctor_leaves
+                   ├── doctor_schedules ─── appointments ─── transaksi ─── detail_transaksi
+                   └──                                        └── medical_records ─── medicines_record_medicine ─── medicines
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### Struktur Tabel
 
-## Contributing
+| Tabel | Deskripsi |
+|-------|-----------|
+| `roles` | Master role pengguna (Admin/Dokter/Pasien) |
+| `users` | Data pengguna terautentikasi |
+| `polis` | Master poli/departemen kesehatan |
+| `doctor_profiles` | Profesional informasi dokter (SIP, spesialisasi) |
+| `patient_profiles` | Data demografis pasien (NIM/NIP, gol darah, alamat) |
+| `doctor_schedules` | Jadwal praktik dokter (shift, ruang, kuota) |
+| `doctor_leaves` | Cuti/jadwal libur dokter |
+| `appointments` | Janji temu & antrean pasien |
+| `medical_records` | Rekam medis & diagnosis |
+| `medicines` | Inventaris obat |
+| `medicines_record_medicine` | Detail resep obat per rekam medis |
+| `transaksi` | Data transaksi pembayaran |
+| `detail_transaksi` | Rincian item transaksi |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Tech Stack
 
-## Code of Conduct
+#### Backend
+- **Framework:** Laravel 13
+- **Bahasa:** PHP 8.3
+- **Database:** SQLite / MySQL (konfigurabel)
+- **Queue:** Database queue driver
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Frontend
+- **CSS Framework:** TailwindCSS 4
+- **Build Tool:** Vite 8
+- **Template Engine:** Blade
 
-## Security Vulnerabilities
+#### Third-Party Services
+| Service | Kegunaan |
+|---------|----------|
+| **Midtrans** | Payment gateway untuk pembayaran konsultasi |
+| **Laravel Mail** | Notifikasi email (SMTP/Mailtrap/Log) |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## ⚙️ Instalasi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 📋 Prasyarat
+
+Pastikan sistem Anda telah terinstall:
+
+- PHP **^8.3** ([unduh](https://php.net/downloads))
+- Composer **^2.0** ([unduh](https://getcomposer.org))
+- Node.js **^18** ([unduh](https://nodejs.org))
+- Database **SQLite** (bawaan PHP) atau **MySQL** 5.7+
+
+### 🔧 Langkah Instalasi
+
+```bash
+# 1. Clone repositori
+git clone https://github.com/your-username/medcampus.git
+cd medcampus
+
+# 2. Install dependency PHP
+composer install
+
+# 3. Setup environment
+cp .env.example .env
+php artisan key:generate
+
+# 4. Konfigurasi database (SQLite default)
+# Untuk SQLite: secara default sudah menggunakan SQLite
+touch database/database.sqlite
+
+# Atau untuk MySQL, edit file .env:
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=medcampus
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# 5. Jalankan migrasi database
+php artisan migrate
+
+# 6. (Opsional) Seed data awal
+php artisan db:seed
+
+# 7. Install & build asset frontend
+npm install
+npm run build
+
+# 8. Jalankan aplikasi
+php artisan serve
+```
+
+Akses aplikasi di **http://localhost:8000** 🎉
+
+### 🐳 Development Mode
+
+```bash
+# Jalankan semua service sekaligus (server, queue, logs, vite)
+composer run dev
+```
+
+Perintah di atas akan menjalankan:
+- `php artisan serve` → Server web
+- `php artisan queue:listen` → Worker queue
+- `php artisan pail` → Log viewer
+- `npm run dev` → Vite HMR
+
+### 🧪 Testing
+
+```bash
+# Jalankan seluruh test suite
+composer test
+
+# Atau secara manual
+php artisan config:clear --ansi
+php artisan test
+```
+
+---
+
+## 📖 Panduan
+
+### Alur Penggunaan
+
+```
+                    ┌──────────────┐
+                    │   Register   │
+                    │     /Login   │
+                    └──────┬───────┘
+                           │
+              ┌────────────┼────────────┐
+              ▼            ▼            ▼
+        ┌──────────┐ ┌──────────┐ ┌──────────┐
+        │  Admin   │ │  Dokter  │ │  Pasien  │
+        └────┬─────┘ └────┬─────┘ └────┬─────┘
+             │            │            │
+             ▼            ▼            ▼
+   ┌─────────────────┐ ┌────────┐ ┌──────────┐
+   │ Manajemen Sistem│ │Layanan │ │  Booking │
+   │ & Master Data   │ │Medis   │ │ & Antrean│
+   └─────────────────┘ └────────┘ └──────────┘
+```
+
+### 📱 Fitur per Role
+
+#### 🛡️ Admin — `/admin/*`
+
+| Route | View | Fungsi |
+|-------|------|--------|
+| `/admin/dashboard` | `admin-dashboard` | Statistik pengguna, obat, jadwal & distribusi poli |
+| `/admin/users` | `admin-users` | CRUD manajemen pengguna (add/edit/suspend) |
+| `/admin/schedules` | `admin-schedules` | Atur jadwal praktik dokter (shift, ruang) |
+| `/admin/inventory` | `admin-inventory` | Manajemen stok obat (add/edit/delete) |
+| `/admin/settings` | `admin-settings` | Pengaturan sistem |
+
+#### 🩺 Dokter — `/doctor/*`
+
+| Route | View | Fungsi |
+|-------|------|--------|
+| `/doctor/dashboard` | `doctor-dashboard` | Ringkasan pasien hari ini & status antrean |
+| `/doctor/patients` | `doctor-patients` | Daftar pasien berdasarkan jadwal shift |
+| `/doctor/records` | `doctor-records` | Riwayat rekam medis & resep |
+| `/doctor/new-entry` | `doctor-new-entry` | Input rekam medis & resep baru |
+| `/doctor/schedule` | `doctor-schedule` | Jadwal praktik pribadi |
+| `/doctor/profile` | `doctor-profile` | Edit profil & ganti password |
+
+#### 👤 Pasien — `/patient/*`
+
+| Route | View | Fungsi |
+|-------|------|--------|
+| `/patient/dashboard` | `dashboard` | Antrean aktif & status terkini |
+| `/patient/booking` | `booking` | Booking janji dengan dokter (pilih tanggal & jam) |
+| `/patient/checkout` | `checkout` | Halaman checkout pembayaran |
+| `/patient/success` | `success` | Konfirmasi booking berhasil |
+| `/patient/ticket` | `ticket` | Tiket antrean digital (nomor antrean, dokter, ruang) |
+| `/patient/queue-detail` | `queue-detail` | Detail antrean real-time dengan progress bar |
+| `/patient/history` | `history` | Riwayat kunjungan & tagihan |
+| `/patient/visit-detail` | `visit-detail` | Detail kunjungan (diagnosis & resep) |
+| `/patient/profile` | `patient-profile` | Edit profil pribadi |
+
+### 🎨 Tema & Kustomisasi
+
+MedCampus mendukung **Dark Mode** yang dapat diaktifkan melalui toggle pada antarmuka pengguna. Tema disimpan di `localStorage` sehingga preferensi tetap tersimpan antar sesi.
+
+---
+
+## 🗂️ Struktur Project
+
+```
+MedCampus/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       ├── AuthController.php       # Autentikasi & OTP
+│   │       ├── DashboardController.php   # Dashboard Admin
+│   │       ├── DoctorController.php      # Fitur Dokter
+│   │       ├── MedicineController.php    # Manajemen Obat
+│   │       ├── PatientController.php     # Fitur Pasien
+│   │       ├── ScheduleController.php    # Jadwal Dokter
+│   │       └── UserController.php        # Manajemen User
+│   ├── Mail/
+│   │   ├── AppointmentMail.php          # Email konfirmasi booking
+│   │   ├── CancellationMail.php         # Email pembatalan
+│   │   ├── OtpMail.php                  # Email kode OTP
+│   │   └── PaymentMail.php             # Email pembayaran
+│   └── Models/
+│       └── User.php
+├── database/
+│   ├── migrations/                      # 13 file migrasi
+│   └── seeders/
+├── resources/
+│   └── views/                           # 34+ file Blade
+│       ├── emails/                      # Template email
+│       ├── admin-*.blade.php           # Halaman Admin
+│       ├── doctor-*.blade.php          # Halaman Dokter
+│       ├── patient-*.blade.php         # Halaman Pasien
+│       └── *.blade.php                 # Halaman publik
+├── routes/
+│   └── web.php                          # Route definition
+├── public/                              # Assets publik
+├── config/                              # Konfigurasi Laravel
+│── composer.json
+└── package.json
+```
+
+---
+
+## 🧪 Testing
+
+Framework testing menggunakan **PHPUnit 12** dengan konfigurasi *in-memory SQLite database* untuk isolasi penuh.
+
+```bash
+# Jalankan semua test
+composer test
+
+# Jalankan test spesifik
+php artisan test --filter=NamaTest
+
+# Melakukan test dengan coverage (perlu Xdebug/PCOV)
+php artisan test --coverage
+```
+
+**Konfigurasi Testing** (`phpunit.xml`):
+- Environment: `testing`
+- Database: SQLite `:memory:`
+- Cache: `array` driver
+- Session: `array` driver
+- Mail: `array` driver
+
+---
+
+## 🤝 Kontribusi
+
+Kami menyambut kontribusi dari siapa pun! Berikut cara berkontribusi:
+
+1. **Fork** repositori ini
+2. Buat branch fitur: `git checkout -b feat/fitur-keren`
+3. **Commit** perubahan: `git commit -m 'feat: tambah fitur keren'`
+4. **Push** ke branch: `git push origin feat/fitur-keren`
+5. Buka **Pull Request**
+
+### Pedoman Commit
+
+Kami mengikuti [Conventional Commits](https://www.conventionalcommits.org):
+
+| Prefix | Contoh | Keterangan |
+|--------|--------|------------|
+| `feat:` | `feat: add dark mode toggle` | Fitur baru |
+| `fix:` | `fix: fix queue calculation` | Perbaikan bug |
+| `docs:` | `docs: update README` | Perubahan dokumentasi |
+| `refactor:` | `refactor: extract booking logic` | Refaktor kode |
+| `style:` | `style: format blade templates` | Perubahan formatting |
+| `perf:` | `perf: optimize db queries` | Optimasi performa |
+
+---
+
+## 📄 Lisensi
+
+**MedCampus** dirilis di bawah lisensi **MIT**. Lihat file [LICENSE](LICENSE) untuk informasi lebih lanjut.
+
+```
+MIT License
+
+Copyright (c) 2026 MedCampus
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files...
+```
+
+---
+
+## 🙏 Kredit
+
+- **[Laravel](https://laravel.com)** — Framework PHP yang elegan
+- **[TailwindCSS](https://tailwindcss.com)** — CSS utility-first framework
+- **[Midtrans](https://midtrans.com)** — Payment gateway Indonesia
+- **[Vite](https://vitejs.dev)** — Build tool modern
+
+---
+
+<div align="center">
+  
+**Made with ❤️ for Better Campus Healthcare**
+
+[Dashboard Admin](http://localhost:8000/admin/dashboard) •
+[Dokumentasi](https://laravel.com/docs) •
+[Laporkan Bug](https://github.com/your-username/medcampus/issues)
+
+<br>
+
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-php.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-brains.svg)](https://forthebadge.com)
+
+</div>
