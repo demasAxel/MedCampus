@@ -23,8 +23,7 @@
 [🚀 Fitur](#-fitur) •
 [🏗️ Arsitektur](#️-arsitektur) •
 [⚙️ Instalasi](#️-instalasi) •
-[📖 Panduan](#-panduan) •
-[🤝 Kontribusi](#-kontribusi)
+[📖 Panduan](#-panduan)
 
 </div>
 
@@ -347,31 +346,6 @@ php artisan test --coverage
 - Cache: `array` driver
 - Session: `array` driver
 - Mail: `array` driver
-
----
-
-## 🤝 Kontribusi
-
-Kami menyambut kontribusi dari siapa pun! Berikut cara berkontribusi:
-
-1. **Fork** repositori ini
-2. Buat branch fitur: `git checkout -b feat/fitur-keren`
-3. **Commit** perubahan: `git commit -m 'feat: tambah fitur keren'`
-4. **Push** ke branch: `git push origin feat/fitur-keren`
-5. Buka **Pull Request**
-
-### Pedoman Commit
-
-Kami mengikuti [Conventional Commits](https://www.conventionalcommits.org):
-
-| Prefix | Contoh | Keterangan |
-|--------|--------|------------|
-| `feat:` | `feat: add dark mode toggle` | Fitur baru |
-| `fix:` | `fix: fix queue calculation` | Perbaikan bug |
-| `docs:` | `docs: update README` | Perubahan dokumentasi |
-| `refactor:` | `refactor: extract booking logic` | Refaktor kode |
-| `style:` | `style: format blade templates` | Perubahan formatting |
-| `perf:` | `perf: optimize db queries` | Optimasi performa |
 
 ---
 
