@@ -10,12 +10,9 @@
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev)
 [![Midtrans](https://img.shields.io/badge/Midtrans-Payment-008080?style=for-the-badge&logo=midtrans&logoColor=white)](https://midtrans.com)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![PHPUnit](https://img.shields.io/badge/PHPUnit-12-007EC6?style=flat-square&logo=php&logoColor=white)](https://phpunit.de)
 [![SQLite](https://img.shields.io/badge/Database-SQLite%20%7C%20MySQL-003B57?style=flat-square&logo=sqlite&logoColor=white)](https://sqlite.org)
-[![Maintainability](https://img.shields.io/badge/Maintainability-A-00CC66?style=flat-square)]()
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
 
 ---
 
@@ -23,32 +20,13 @@
   <strong>MedCampus</strong> adalah sistem informasi klinik kesehatan kampus yang dirancang untuk memudahkan mahasiswa, dosen, dan staf dalam mengakses layanan kesehatan di lingkungan universitas.
 </p>
 
-[✨ Demo](#-demo) •
 [🚀 Fitur](#-fitur) •
 [🏗️ Arsitektur](#️-arsitektur) •
 [⚙️ Instalasi](#️-instalasi) •
 [📖 Panduan](#-panduan) •
 [🤝 Kontribusi](#-kontribusi)
 
-<br>
-
-![MedCampus Screenshot](https://via.placeholder.com/800x400/008080/FFFFFF?text=MedCampus+Dashboard)
-
 </div>
-
----
-
-## ✨ Demo
-
-> 🔗 **Akses Aplikasi:** [https://medcampus.example.com](https://medcampus.example.com)
-
-### Akun Demo
-
-| Role | Email | Password |
-|------|-------|----------|
-| 🛡️ **Admin** | `admin@medcampus.ac.id` | `password` |
-| 🩺 **Dokter** | `dokter@medcampus.ac.id` | `password` |
-| 👤 **Pasien** | `pasien@medcampus.ac.id` | `password` |
 
 ---
 
@@ -397,42 +375,9 @@ Kami mengikuti [Conventional Commits](https://www.conventionalcommits.org):
 
 ---
 
-## 📄 Lisensi
-
-**MedCampus** dirilis di bawah lisensi **MIT**. Lihat file [LICENSE](LICENSE) untuk informasi lebih lanjut.
-
-```
-MIT License
-
-Copyright (c) 2026 MedCampus
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files...
-```
-
----
-
 ## 🙏 Kredit
 
 - **[Laravel](https://laravel.com)** — Framework PHP yang elegan
 - **[TailwindCSS](https://tailwindcss.com)** — CSS utility-first framework
 - **[Midtrans](https://midtrans.com)** — Payment gateway Indonesia
 - **[Vite](https://vitejs.dev)** — Build tool modern
-
----
-
-<div align="center">
-  
-**Made with ❤️ for Better Campus Healthcare**
-
-[Dashboard Admin](http://localhost:8000/admin/dashboard) •
-[Dokumentasi](https://laravel.com/docs) •
-[Laporkan Bug](https://github.com/your-username/medcampus/issues)
-
-<br>
-
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/made-with-php.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/uses-brains.svg)](https://forthebadge.com)
-
-</div>
